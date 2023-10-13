@@ -9,7 +9,7 @@ ini_set("display_errors", 1);
 // ini_set('memory_limit','-1');
 
 // 기본 설정
-$COMPANY_TITLE = "관리자모드";
+$COMPANY_TITLE = "게시판";
 $COPYRIGHT_YEAR = "2023";
 $PROVIDER_TITLE = "JFIX";
 $COMPANY_ADDRESS = "";

@@ -42,6 +42,27 @@
             window.location.href = `/board/board_update.php?table_name=${table_name}&idx=${idx}`;
         });
 
+        $("#delete").click(function() {
+
+            if (confirm("삭제한 데이터는 복구가 불가능합니다.\r\n삭제하시겠습니까?")) {
+
+                $.ajax({
+                    type: "post",
+                    data: $("#form").serialize() + "&process_mode=delete"+ "&table_name=" + table_name+ "&idx=" + idx,
+                    url: "/board/board_ajax.php",
+                    dataType: "json",
+                    cache: false,
+                    async: false,
+                }).done(function(data) {
+                    if (data.status) {
+                        window.location.href="/board/board.php?table_name="+table_name;
+                    } else {
+                        toastr["error"](data.message);
+                    }
+                });
+            }
+        });
+
     });
 
     $(function() {

@@ -4,7 +4,7 @@
 
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/layout/ad_nav_top.php"; ?>
 
-<div class="container">
+<div class="container mt-5">
 
     <div class="table-responsive m-t-md m-b-md">
         <table id="dataTables_1" class="table table-striped table-bordered table-hover" style="width: 100%; height: auto;">

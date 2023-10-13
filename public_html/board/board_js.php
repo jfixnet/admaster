@@ -28,6 +28,8 @@
                 },
                 url: "/board/board_ajax.php",
                 dataType: "json",
+                processing: true,
+                serverSide: true,
                 cache: false,
                 async: false,
                 dataSrc: '',
@@ -48,7 +50,7 @@
                     }
                 },
             ],
-            pageLength: 15,
+            pageLength: 10,
             lengthChange: false,
             searching: false,
             lengthMenu:[ [10,15,25,50,100, -1],[10,15,25,50,100, "ALL"] ],

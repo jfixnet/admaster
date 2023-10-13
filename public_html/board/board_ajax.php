@@ -10,11 +10,23 @@ if ($process_mode == "list") {
     $srch_key = sanitize($_REQUEST['srch_key']);
     $srch_keyword = sanitize($_REQUEST['srch_keyword']);
 
+
+    // DataTables 요청 처리
+    $draw = $_POST['draw'];
+    $start = $_POST['start'];
+    $length = $_POST['length'];
+    $columns = $_POST['columns'];
+    $order = $_POST['order'][0];
+
+    $column = $columns[$order['column']]['data'];
+    $dir = $order['dir'];
+
     $sql_where = '';
     if ($srch_keyword) {
         $sql_where .= " AND $srch_key LIKE '%{$srch_keyword}%' ";
     }
 
+    // 데이터 쿼리
     $sql = "
                     SELECT *, (select count(*) from ${table_name}) as total_count
                     
@@ -24,7 +36,9 @@ if ($process_mode == "list") {
                         1 = 1
                                         
                         ${sql_where}
-                                        
+                    
+                    LIMIT ${start}, ${length}
+                    
                     ORDER BY idx desc
     ";
 
@@ -99,7 +113,35 @@ else if ($process_mode == 'update') {
     $result = $db->query($sql)->affectedRows();
 
     // 분기
-    if ($rsult != -1) {
+    if ($result != -1) {
+        $temp = array(
+            "status" => 1,
+            "message" => "수정되었습니다.",
+        );
+    } else {
+        $temp = array(
+            "status" => 0,
+            "message" => "저장 오류",
+        );
+    }
+
+    echo json_encode($temp);
+}
+else if ($process_mode == 'delete') {
+
+    $table_name = sanitize($_REQUEST['table_name']);
+    $idx = $_REQUEST['idx'];
+
+    $sql = "
+                    DELETE FROM ${table_name}
+                    WHERE idx = '${idx}' 
+                    LIMIT 1
+    ";
+
+    $result = $db->query($sql)->affectedRows();
+
+    // 분기
+    if ($result != -1) {
         $temp = array(
             "status" => 1,
             "message" => "수정되었습니다.",

@@ -8600,3 +8600,29 @@ body.md-skin {
 .text-center {
   text-align: center;
 }
+.horizontal-list {
+  list-style: none;
+  padding: 0;
+  display: flex; /* flexbox를 사용하여 가로 정렬 */
+}
+
+.horizontal-list li {
+  margin-right: 20px; /* 각 항목 간 간격 설정 */
+}
+
+.horizontal-list a {
+  text-decoration: none;
+  color: #333;
+}
+.bd-navbar {
+  padding: 0.75rem 0;
+  background-color: white;
+  border-bottom: 1px solid #e7eaec;
+  /*box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15), inset 0 -1px 0 rgba(255, 255, 255, 0.15);*/
+}
+.navbar>.container, .navbar>.container-fluid, .navbar>.container-lg, .navbar>.container-md, .navbar>.container-sm, .navbar>.container-xl, .navbar>.container-xxl {
+  display: flex;
+  flex-wrap: inherit;
+  align-items: center;
+  justify-content: space-between;
+}

@@ -18,7 +18,7 @@
         <div class="col-sm-6 text-right" style="font-size: 15px;">
             <a id="return_list" class="m-r-sm" style="color:#676a6c"><i class="fa fa-list"></i></a>
             <a id="update" class="m-r-sm" style="color:#676a6c"><i class="fa fa-pencil"></i></a>
-            <a id="update" class="m-r-sm" style="color:#676a6c"><i class="fa fa-trash"></i></a>
+            <a id="delete" class="m-r-sm" style="color:#676a6c"><i class="fa fa-trash"></i></a>
         </div>
     </div>
 

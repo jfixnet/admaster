@@ -4,7 +4,8 @@
 
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/layout/nav_top.php"; ?>
 
-<div class="container">
+<div class="container mt-5">
+
     <div class="row">
 
         <div class="col-sm-2 offset-sm-7">
@@ -45,7 +46,7 @@
 
     <div class="row">
         <div class="col-xs-6 text-right">
-            <button type="button" class="btn btn-primary btn-sm" id="board_write">게시글 등록</button>
+            <button type="button" class="btn btn-primary btn-sm" id="board_write">글쓰기</button>
         </div>
     </div>
 
