@@ -22,7 +22,7 @@
         <div class="form-group" style="margin-bottom: 20px;">
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" id="id_save" style="width: 20px; height: 20px;vertical-align: middle;  position: relative;  bottom: 3px;">
-                <label class="custom-control-label" for="id_save" data-toggle="popover" data-trigger="hover" data-placement="top" title="" style="color: white" data-content="아이디는 저장한 날로부터 7일간 유효합니다." data-original-title="">&nbsp아이디 기억하기</label>
+                <label class="custom-control-label" for="id_save" data-toggle="popover" data-trigger="hover" data-placement="top" title="" data-content="아이디는 저장한 날로부터 7일간 유효합니다." data-original-title="">&nbsp아이디 기억하기</label>
             </div>
         </div>
 
@@ -46,7 +46,7 @@
         $.ajax({
             type: "post",
             data: $("#form_main").serialize() + "&process_mode=login",
-            url: "/ad/index_ajax.php",
+            url: "/ad/login_ajax.php",
             dataType: "json",
             cache: false,
             async: false,
