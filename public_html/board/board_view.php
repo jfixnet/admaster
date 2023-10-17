@@ -16,9 +16,9 @@
             <span class="m-r-sm font-bold" id="user_name"></span><i class="fa fa-clock"></i> <span id="create_date"></span>
         </div>
         <div class="col-sm-6 text-right" style="font-size: 15px;">
-            <a id="return_list" class="m-r-sm" style="color:#676a6c"><i class="fa fa-list"></i></a>
-            <a id="update" class="m-r-sm" style="color:#676a6c"><i class="fa fa-pencil"></i></a>
-            <a id="delete" class="m-r-sm" style="color:#676a6c"><i class="fa fa-trash"></i></a>
+            <a id="return_list" class="m-r-sm" style="color:#676a6c" title="목록으로"><i class="fa fa-list"></i></a>
+            <a id="update" class="m-r-sm" style="color:#676a6c" title="글수정"><i class="fa fa-pencil-square"></i></a>
+            <a id="delete" class="m-r-sm" style="color:#676a6c" title="글삭제"><i class="fa fa-trash"></i></a>
         </div>
     </div>
 

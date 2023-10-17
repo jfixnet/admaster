@@ -1,9 +1,9 @@
 <script>
 
-    function list() {
+    function visitorCount() {
         $.ajax({
             type: "post",
-            data: $("#form_main").serialize() + "&process_mode=list",
+            data: $("#form_main").serialize() + "&process_mode=visitor_count",
             url: "/index_ajax.php",
             dataType: "json",
             cache: false,
@@ -14,6 +14,6 @@
     }
 
     $(function() {
-        list(); // 목록
+        visitorCount();
     });
 </script>

@@ -85,7 +85,8 @@ $.extend( true, $.fn.dataTable.defaults, {
     "language": {
         "decimal" : "",
         "emptyTable" : "데이터가 없습니다.",
-        "info" : "_START_ - _END_ (총, _TOTAL_ 건)",
+        // "info" : "_START_ - _END_ (Total _TOTAL_ 건)",
+        "info" : "Total _TOTAL_ 건 _PAGE_ 페이지",
         "infoEmpty" : "0건",
         "infoFiltered" : "(전체 _MAX_ 건 중 검색결과)",
         "infoPostFix" : "",

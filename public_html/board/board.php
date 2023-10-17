@@ -19,7 +19,7 @@
             <div class="input-group">
                 <input form="form_main" type="text" id="srch_keyword" name="srch_keyword" placeholder="검색어" class="form-control form-control-sm" autocomplete="off">
                 <span class="input-group-btn">
-                    <button form="form_main" type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                    <button form="form_main" type="button" class="btn btn-primary" id="search_btn"><i class="fa fa-search"></i></button>
                 </span>
             </div>
         </div>
@@ -35,10 +35,10 @@
             </colgroup>
             <thead>
             <tr>
-                <th class="text-center">번호</th>
-                <th class="text-center">제목</th>
-                <th class="text-center">작성자</th>
-                <th class="no_orderable">날짜</th>
+                <th class="no_orderable text-center">번호</th>
+                <th class="no_orderable text-center">제목</th>
+                <th class="no_orderable text-center">작성자</th>
+                <th class="">날짜</th>
             </tr>
             </thead>
         </table>

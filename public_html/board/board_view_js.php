@@ -1,4 +1,6 @@
 <script>
+    let userName = '<?=$_SESSION['user_name']?>';
+
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -39,7 +41,12 @@
         });
 
         $("#update").click(function() {
-            window.location.href = `/board/board_update.php?table_name=${table_name}&idx=${idx}`;
+            if (userName) {
+                window.location.href = `/board/board_update.php?table_name=${table_name}&idx=${idx}`;
+            } else {
+                window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}`;
+            }
+
         });
 
         $("#delete").click(function() {

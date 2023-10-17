@@ -165,3 +165,51 @@ function send_mail($to, $from, $from_name, $subject, $contents, $attach_file) {
 
     return mail($to, $subject, $message, $headers, $returnpath);
 }
+function createDateRangeArray($startDate, $endDate)
+{
+    $start = new DateTime($startDate);
+    $end = new DateTime($endDate);
+    $end->modify('+1 day'); // Include the end date in the range
+
+    $dateRange = [];
+
+    $num = 0;
+    while ($start < $end) {
+        $dateRange[$num]['day'] = $start->format('Y-m-d');
+        $dateRange[$num]['count'] = 0;
+        $start->modify('+1 day');
+        $num++;
+    }
+
+    return $dateRange;
+}
+function createMonthRangeArray($startDate, $endDate)
+{
+    $start = new DateTime($startDate);
+    $end = new DateTime($endDate);
+    $end->modify('+1 Month'); // Include the end date in the range
+
+    $dateRange = [];
+
+    $num = 0;
+    while ($start < $end) {
+        $dateRange[$num]['day'] = $start->format('Y-m');
+        $dateRange[$num]['count'] = 0;
+        $start->modify('+1 Month');
+        $num++;
+    }
+
+    return $dateRange;
+}
+function createYearRangeArray($startYear, $endYear) {
+    $yearRange = array();
+
+    $num = 0;
+    for ($year = $startYear; $year <= $endYear; $year++) {
+        $yearRange[$num]['day'] = $year;
+        $yearRange[$num]['count'] = 0;
+        $num++;
+    }
+
+    return $yearRange;
+}

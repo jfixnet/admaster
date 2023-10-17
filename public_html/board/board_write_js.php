@@ -1,4 +1,11 @@
 <script>
+    let userName = '<?=$_SESSION['user_name']?>';
+
+    $("#login_check_div").show();
+    if (userName) {
+        $("#login_check_div").hide();
+    }
+
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -22,9 +29,11 @@
         $("#content").val( $(".summernote").summernote("code") ); // 에디터 처리
         $("#idx").val( idx ); // 에디터 처리
         $("#form_table_name").val( table_name ); // 에디터 처리
+        let user_name = $("#user_name").val();
 
         var formData = new FormData( $("#form")[0] );
         formData.append("process_mode", process_mode);
+        formData.append("user_name", user_name);
 
         $.ajax({
             type: "post",

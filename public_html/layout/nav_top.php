@@ -5,22 +5,29 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+
+        <div class="collapse navbar-collapse m-t-md" id="navbarNavDropdown" style="">
             <ul class="nav justify-content-center">
-                <!--<li class="nav-item">-->
-                <!--    <a class="nav-link active" aria-current="page" href="/">Home</a>-->
-                <!--</li>-->
-                
-                <li class="nav-item">
+                <li class="nav-item m-r-sm">
                     <a class="nav-link" href="/board/board.php?table_name=notice">공지사항</a>
                 </li>
-                
-                <li class="nav-item">
+
+                <li class="nav-item m-r-sm">
                     <a class="nav-link" href="/board/board.php?table_name=test_board">테스트용</a>
                 </li>
-
             </ul>
         </div>
     </div>
 </nav>
 </header>
+
+<script>
+    $(document).ready(function() {
+        var currentLocation = window.location.href;
+        $("ul li a").each(function() {
+            if (currentLocation.includes($(this).attr("href"))) {
+                $(this).parent("li").addClass("active");
+            }
+        });
+    });
+</script>

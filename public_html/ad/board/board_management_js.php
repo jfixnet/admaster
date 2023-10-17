@@ -31,8 +31,7 @@
                 { data: "memo", className: "text-left" },
                 { data: "idx", className: "text-center",
                     render: function(data, type, row, meta) {
-                        let html = `<button type='button' class='btn btn-default btn-xs btn_update' onclick="location.href='/ad/board/board_management_update.php?table_name=${row.table_name}'">수정</button>
-                                    <button type='button' class='btn btn-danger btn-xs btn_delete' data-idx='${data}'>삭제</button>`;
+                        let html = `<button type='button' class='btn btn-default btn-xs btn_update' onclick="location.href='/ad/board/board_management_update.php?table_name=${row.table_name}'">수정</button>`;
                         return html;
                     }
                 },

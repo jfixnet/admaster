@@ -59,6 +59,7 @@ if ($process_mode == "list") {
               `title` varchar(255) NOT NULL COMMENT '제목',
               `content` longtext NOT NULL COMMENT '내용',
               `user_name` varchar(25) NOT NULL COMMENT '작성자명',
+              `write_password` varchar(255) NOT NULL COMMENT '게시글 비밀번호',
               
               `create_date` datetime DEFAULT current_timestamp(),
               `create_user_code` varchar(25) DEFAULT NULL,

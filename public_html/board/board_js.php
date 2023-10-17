@@ -8,36 +8,35 @@
 
     let table_name = getParameterByName('table_name');
 
-    $("#form_main").on("submit", function() {
+    $("#search_btn").on("click", function () {
         list();
-        return false;
     });
 
     function list() {
+        let srch_key = $("#srch_key").val();
+        let srch_keyword = $("#srch_keyword").val();
 
-        // 초기화
         $('#dataTables_1').DataTable({buttons: []}).destroy();
-        $('#dataTables_1').DataTable({
+        new DataTable('#dataTables_1', {
             ajax: {
-                type: "post",
-                data: function() {
-                    var param = $("#form_main").serializeObject();
-                    param.process_mode = "list";
-                    param.table_name = table_name;
-                    return param;
+                data : {
+                    process_mode : 'list',
+                    table_name : table_name,
+                    srch_key : srch_key,
+                    srch_keyword : srch_keyword,
                 },
                 url: "/board/board_ajax.php",
                 dataType: "json",
-                processing: true,
-                serverSide: true,
-                cache: false,
-                async: false,
-                dataSrc: '',
             },
-            createdRow: function (row, data, index) { },
-            drawCallback: function(settings, json) { },
+            processing: true,
+            serverSide: true,
             columns: [
-                { data: "no", className: "text-center" },
+                { data: "no", className: "text-center", render:function (data, type, row, meta) {
+                        // return meta.row + meta.settings._iDisplayStart + 1;
+                        // return meta.settings._iDisplayStart;
+                        // return meta.row;
+                        return meta.settings._iRecordsTotal - meta.settings._iDisplayStart - meta.row;
+                }},
                 { data: "title", className: "text-left" ,  render: function(data, type, row, meta) {
                         let html = `<a class="article" href="board_view.php?table_name=${table_name}&idx=${row.idx}">${data}</a>`;
                         return html;
@@ -47,15 +46,9 @@
                 { data: "create_date", className: "text-center",  render: function(data, type, row, meta) {
                         let html = data.slice(0,10);
                         return html;
-                    }
-                },
+                }},
             ],
-            pageLength: 10,
-            lengthChange: false,
             searching: false,
-            lengthMenu:[ [10,15,25,50,100, -1],[10,15,25,50,100, "ALL"] ],
-            // dom: 't<"pull-left"i><"pull-center"p>',
-            buttons: []
         });
     }
 

@@ -6,6 +6,17 @@
 
 <div class="container mt-5">
 
+    <div class="row mb-3" id="login_check_div">
+        <div class="col-sm-6">
+            <label class="col-sm-2 form-label"><span class="text-danger">*</span> 이름</label>
+            <input form="form" type="text" id="user_name" name="user_name" class="form-control form-control-sm" autocomplete="off">
+        </div>
+        <div class="col-sm-6">
+            <label class="col-sm-2 form-label"><span class="text-danger">*</span> 비밀번호</label>
+            <input form="form" type="password" id="write_password" name="write_password" class="form-control form-control-sm" autocomplete="off">
+        </div>
+    </div>
+
     <div class="row mb-3">
         <div class="col-sm-12">
             <label class="col-sm-2 form-label"><span class="text-danger">*</span> 제목</label>
@@ -23,7 +34,7 @@
     <div class="row">
         <div class="col-sm-12 text-center">
             <button form="form" type="button" class="btn btn-default btn-sm" id="return_list">취소</button>
-            <button form="form" type="submit" class="btn btn-primary btn-sm">글수정</button>
+            <button form="form" type="submit" class="btn btn-primary btn-sm" id="update_btn">글수정</button>
         </div>
     </div>
 

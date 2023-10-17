@@ -1,4 +1,11 @@
 <script>
+    let userName = '<?=$_SESSION['user_name']?>';
+
+    $("#login_check_div").show();
+    if (userName) {
+        $("#login_check_div").hide();
+    }
+
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -45,7 +52,7 @@
         });
     }
 
-    function list() {
+    function view() {
         let process_mode = 'view'
 
         $.ajax({
@@ -57,8 +64,10 @@
             async: false,
         }).done(function(result) {
             if (result) {
+                $("#user_name").val(result.user_name);
                 $("#title").val(result.title);
                 $(".summernote").summernote("code", result.content); // 에디터 처리
+                $("#update_btn").show();
 
             } else {
                 toastr["error"](result.message);
@@ -97,7 +106,16 @@
     });
 
     $(function() {
-        list();
+        if (!userName) {
+            if (!getCookie('update_status') || getCookie('update_status') != idx){
+                window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}`;
+                return false;
+            }
+        }
+
+        deleteCookie('update_status');
+
+        view();
 
     });
 

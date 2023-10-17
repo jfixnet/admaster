@@ -4,7 +4,7 @@
 
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/layout/nav_top.php"; ?>
 
-<div class="container">
+<div class="container mt-5">
     메인화면
 </div>
 

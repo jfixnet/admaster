@@ -41,7 +41,7 @@ h5 {
 .nav > li > a {
   color: #a7b1c2;
   font-weight: 500;
-  padding: 14px 20px 14px 25px;
+  /*padding: 14px 20px 14px 25px;*/
 }
 .nav.navbar-right > li > a {
   color: #999c9e;
@@ -178,9 +178,18 @@ h5 {
 ul.nav-second-level {
   background: #293846;
 }
+.nav > li {
+  border: 1px solid #d6e9ff;
+  color: #6794d3;
+  /*padding: 5px 15px;*/
+  border-radius: 30px;
+}
 .nav > li.active {
-  border-left: 4px solid #19aa8d;
-  background: #293846;
+  /*border-left: 4px solid #19aa8d;*/
+  background: #3a8afd;
+  display: block;
+  /*padding: 5px 15px;*/
+  border-radius: 30px;
 }
 .nav.nav-second-level > li.active {
   border: none;
