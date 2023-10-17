@@ -1,4 +1,4 @@
-<header class="navbar navbar-expand-lg bd-navbar sticky-top">
+<header class="navbar navbar-expand-lg bd-navbar">
     <nav class="container-xxl bd-gutter flex-wrap flex-lg-nowrap">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">게시판</a>
@@ -17,6 +17,7 @@
                 </li>
             </ul>
         </div>
+
     </div>
 </nav>
 </header>
