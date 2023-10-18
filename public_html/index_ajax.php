@@ -10,6 +10,7 @@ if ($process_mode == "visitor_count") {
     //    접속자 IP
     $ip = $_SERVER['REMOTE_ADDR'];
 
+
     if (!$ip) {
         $result = [];
         echo json_encode($result);
@@ -38,7 +39,7 @@ if ($process_mode == "visitor_count") {
         exit;
     }
 
-    $route = $_SERVER['HTTP_REFERER'];
+    $referrer = $_REQUEST['referrer'];
     $agent = getBrowserInfo();
     $os = getOsInfo();
     $device = getDeviceInfo();
@@ -48,7 +49,7 @@ if ($process_mode == "visitor_count") {
                     
                     SET 
                         ip = '${ip}',
-                        route = '${route}',
+                        route = '${referrer}',
                         browser = '${agent}',
                         os = '${os}',
                         device = '${device}'
