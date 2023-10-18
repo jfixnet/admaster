@@ -1,4 +1,6 @@
 <script>
+    let isAdmin = '<?=$_SESSION['is_admin']?>';
+
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -38,7 +40,12 @@
                         return meta.settings._iRecordsTotal - meta.settings._iDisplayStart - meta.row;
                 }},
                 { data: "title", className: "text-left" ,  render: function(data, type, row, meta) {
-                        let html = `<a class="article" href="board_view.php?table_name=${table_name}&idx=${row.idx}">${data}</a>`;
+                        let secret_icon = ``;
+                        if (row.is_secret == "Y") {
+                            secret_icon = `<i class="fa fa-lock"></i>`;
+                        }
+
+                        let html = `<a class="article" href="board_view.php?table_name=${table_name}&idx=${row.idx}">${data} ${secret_icon}</a>`;
                         return html;
                     }
                 },
@@ -49,7 +56,33 @@
                         return html;
                 }},
             ],
+            pageLength: 15,
             searching: false,
+        });
+    }
+
+    function pageSetting() {
+        let process_mode = 'page_setting'
+
+        $.ajax({
+            type: "post",
+            data: $("#form").serialize() + "&process_mode=" + process_mode+ "&table_name=" + table_name,
+            url: "/board/board_ajax.php",
+            dataType: "json",
+            cache: false,
+            async: false,
+        }).done(function(result) {
+            if (result) {
+                console.log(result);
+                $("#page_title").text(result.table_title);
+
+                if (result.admin_only == 'N' || isAdmin) {
+                    $(".write_setting").show();
+                }
+
+            } else {
+                console.log('페이지 세팅 오류');
+            }
         });
     }
 
@@ -60,7 +93,8 @@
     });
 
     $(function() {
-        list(); // 목록
+        pageSetting();
+        list();
     });
 
 </script>

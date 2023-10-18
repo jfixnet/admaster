@@ -13,7 +13,11 @@
                 </li>
 
                 <li class="nav-item m-r-sm">
-                    <a class="nav-link" href="/board/board.php?table_name=test_board">테스트용</a>
+                    <a class="nav-link" href="/board/board.php?table_name=freeboard">자유게시판</a>
+                </li>
+
+                <li class="nav-item m-r-sm">
+                    <a class="nav-link" href="/board/board.php?table_name=qna">문의게시판</a>
                 </li>
             </ul>
         </div>

@@ -9,6 +9,10 @@
     <div class="container">
 
         <div class="row">
+            <span class="font-bold" style="font-size: 20px;" id="page_title"></span>
+        </div>
+        
+        <div class="row">
             <div class="col-sm-2 offset-sm-7">
                 <select form="form_main" id="srch_key" name="srch_key" class="form-select form-control-sm">
                     <option value="title">제목</option>
@@ -47,7 +51,7 @@
             </table>
         </div>
 
-        <div class="row">
+        <div class="row write_setting" style="display: none;">
             <div class="col-xs-6 text-right">
                 <button type="button" class="btn btn-primary btn-sm" id="board_write">글쓰기</button>
             </div>

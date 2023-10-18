@@ -5,26 +5,29 @@
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/layout/nav_top.php"; ?>
 
 <div class="wrapper wrapper-content">
-    <div class="container mt-5">
+    <div class="container">
+
+        <div class="row mb-3">
+            <span class="font-bold" style="font-size: 20px;" id="page_title"></span>
+        </div>
 
         <div class="row mb-3" id="login_check_div">
             <div class="col-sm-6">
-                <label class="col-sm-2 form-label"><span class="text-danger">*</span> 이름</label>
-                <input form="form" type="text" id="user_name" name="user_name" class="form-control form-control-sm" autocomplete="off">
+                <!--<label class="col-sm-2 form-label"><span class="text-danger">*</span> 이름</label>-->
+                <input form="form" type="text" id="user_name" name="user_name" class="form-control form-control-sm required" autocomplete="off" placeholder="이름">
             </div>
             <div class="col-sm-6">
-                <label class="col-sm-2 form-label"><span class="text-danger">*</span> 비밀번호</label>
-                <input form="form" type="password" id="write_password" name="write_password" class="form-control form-control-sm" autocomplete="off">
+                <!--<label class="col-sm-2 form-label"><span class="text-danger">*</span> 비밀번호</label>-->
+                <input form="form" type="password" id="write_password" name="write_password" class="form-control form-control-sm required" autocomplete="off" placeholder="비밀번호">
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-sm-12">
-                <label class="col-sm-2 form-label"><span class="text-danger">*</span> 제목</label>
-                <input form="form" type="text" id="title" name="title" class="form-control form-control-sm" autocomplete="off">
+                <!--<label class="col-sm-2 form-label"><span class="text-danger">*</span> 제목</label>-->
+                <input form="form" type="text" id="title" name="title" class="form-control form-control-sm required" autocomplete="off" placeholder="제목을 입력해주세요." required>
             </div>
         </div>
-
         <div class="row mb-3">
             <div class="col-sm-12">
                 <label class="col-sm-2 form-label"><span class="text-danger"></span> 내용</label>

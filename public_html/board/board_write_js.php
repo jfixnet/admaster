@@ -1,5 +1,6 @@
 <script>
     let userName = '<?=$_SESSION['user_name']?>';
+    let isAdmin = '<?=$_SESSION['is_admin']?>';
 
     $("#login_check_div").show();
     if (userName) {
@@ -60,7 +61,7 @@
         var $summernote = $('.summernote').summernote({
             lang: 'ko-KR', // default: 'en-US'
             tabsize: 2,
-            height: 200,
+            height: 400,
             toolbar: [
                 ['style', ['style']],
                 ['font', ['bold', 'underline', 'clear']],
@@ -144,8 +145,39 @@
     });
 
 
-    $(function() {
+    function pageSetting() {
+        let process_mode = 'page_setting'
 
+        $.ajax({
+            type: "post",
+            data: $("#form").serialize() + "&process_mode=" + process_mode+ "&table_name=" + table_name,
+            url: "/board/board_ajax.php",
+            dataType: "json",
+            cache: false,
+            async: false,
+        }).done(function(result) {
+            if (result) {
+                console.log(result);
+                $("#page_title").text(result.table_title);
+
+                if (result.comment_mode == 'Y') {
+                    $(".comment_div").show();
+                }
+
+                $("#is_secret").prop("checked", false);
+                if (result.secret_mode == 'A') {
+                    $("#is_secret").prop("checked", true);
+                    $("#is_secret").prop("disabled", true);
+                }
+
+            } else {
+                console.log('페이지 세팅 오류');
+            }
+        });
+    }
+
+    $(function() {
+        pageSetting();
         fileUploadAdd(0);
     });
 

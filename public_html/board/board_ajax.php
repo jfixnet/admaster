@@ -102,7 +102,7 @@ if ($process_mode == "list") {
         "draw" => $draw,
         "recordsTotal" => $total_count['count'],
         "recordsFiltered" => $filter_count['count'],
-        "data" => $list
+        "data" => $list,
     );
 
     echo json_encode($data);
@@ -361,6 +361,139 @@ else if ($process_mode == "delete_file") {
         $temp = array(
             "status" => 1,
             "message" => "삭제되었습니다.",
+        );
+    } else {
+        $temp = array(
+            "status" => 0,
+            "message" => "삭제 오류",
+        );
+    }
+
+    echo json_encode($temp);
+}
+
+else if ($process_mode == "page_setting") {
+
+    $table_name = sanitize($_REQUEST['table_name']);
+
+    // 테이블 설정 정보
+    $sql = "
+                    SELECT *
+                    
+                    FROM board_management 
+                    
+                    WHERE
+                        table_name = '${table_name}'
+                    
+                    ORDER BY idx
+    ";
+
+    $table_setting_data = $db->query($sql)->fetchArray();
+
+    echo json_encode($table_setting_data);
+}
+
+else if ($process_mode == "comment_create") {
+
+    $table_name = sanitize($_REQUEST['table_name']);
+    $idx = sanitize($_REQUEST['idx']);
+    $parent_comment_idx = sanitize($_REQUEST['parent_comment_idx']);
+    $user_name = sanitize($_REQUEST['user_name']);
+    $comment = $_REQUEST['comment'];
+    $comment_password = enc($_REQUEST['comment_password']);
+    $is_secret = $_REQUEST['is_secret'];
+
+    if (!$user_name) {
+        $sql = "
+                    SELECT *
+                    FROM users
+                    WHERE code = '${_SESSION['user_code']}'
+        ";
+        $result = $db->query($sql)->fetchArray();
+
+        $user_name = $result['name'];
+    }
+
+    $sql = "
+                    INSERT INTO comment
+                    
+                    SET 
+                        table_name = '${table_name}',
+                        fk_table_idx = '${idx}',
+                        parent_comment_idx = '${parent_comment_idx}',
+                        comment = '${comment}',
+                        user_name = '${user_name}',
+                        comment_password = '${comment_password}',
+                        create_user_code = '${_SESSION['user_code']}'
+    ";
+
+    $result = $db->query($sql)->affectedRows();
+
+    // 분기
+    if ($result != -1) {
+        $temp = array(
+            "status" => 1,
+            "message" => "등록 되었습니다.",
+        );
+    } else {
+        $temp = array(
+            "status" => 0,
+            "message" => "저장 오류",
+        );
+    }
+
+    echo json_encode($temp);
+}
+
+else if ($process_mode == "comment_list") {
+
+    $table_name = sanitize($_REQUEST['table_name']);
+    $idx = sanitize($_REQUEST['idx']);
+
+    $sql = "
+                    SELECT *
+                    FROM comment
+                    WHERE 
+                            table_name = '${table_name}'
+                    AND fk_table_idx = '${idx}'
+    ";
+
+    $result = $db->query($sql)->fetchAll();
+
+    if (count($result) == 0) {
+        $result = '';
+        echo json_encode($result);
+        exit;
+    }
+
+    $list = [];
+    foreach ($result as $item) {
+
+        $list[] = $item;
+    }
+
+    $result = $list;
+
+    echo json_encode($result);
+}
+
+else if ($process_mode == "comment_delete") {
+
+    $idx = sanitize($_REQUEST['idx']);
+
+    $sql = "
+                    DELETE FROM comment
+                    WHERE 
+                            idx = '${idx}'
+                    LIMIT 1
+    ";
+
+    $result = $db->query($sql)->affectedRows();
+
+    if ($result != -1) {
+        $temp = array(
+            "status" => 1,
+            "message" => "삭제 되었습니다.",
         );
     } else {
         $temp = array(

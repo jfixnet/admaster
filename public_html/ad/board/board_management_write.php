@@ -7,16 +7,39 @@
 <div class="container mt-5">
 
     <div class="row mb-3">
-        <div class="col-sm-12">
-            <label class="col-sm-2 form-label"><span class="text-danger">*</span> 테이블명</label>
+        <div class="col-sm-6">
+            <label class="col-sm-2 form-label"><span class="text-danger">*</span> 테이블</label>
             <input form="form" type="text" id="table_name" name="table_name" class="form-control form-control-sm" autocomplete="off">
+        </div>
+
+        <div class="col-sm-6">
+            <label class="col-sm-2 form-label"><span class="text-danger"></span> 게시판 제목</label>
+            <input form="form" type="text" id="table_title" name="table_title" class="form-control form-control-sm" autocomplete="off">
         </div>
     </div>
 
     <div class="row mb-3">
-        <div class="col-sm-12">
-            <label class="col-sm-2 form-label"><span class="text-danger"></span> 게시판 이름</label>
-            <input form="form" type="text" id="table_title" name="table_title" class="form-control form-control-sm" autocomplete="off">
+        <div class="col-sm-3">
+            <label class="col-sm-3 form-label"><span class="text-danger"></span> 비밀글 사용</label>
+            <select form="form" class='form-control' name="secret_mode" id="secret_mode">
+                <option value='N'>사용하지않음</option>
+                <option value='Y'>체크박스</option>
+                <option value='A'>무조건</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label class="col-sm-3 form-label"><span class="text-danger"></span> 코멘트 사용</label>
+            <select form="form" class='form-select' name="comment_mode" id="comment_mode">
+                <option value='N'>N</option>
+                <option value='Y'>Y</option>
+            </select>
+        </div>
+        <div class="col-sm-3">
+            <label class="col-sm-3 form-label"><span class="text-danger"></span> 관리자 전용</label>
+            <select form="form" class='form-control' name="secret_mode" id="secret_mode">
+                <option value='N'>N</option>
+                <option value='Y'>Y</option>
+            </select>
         </div>
     </div>
 

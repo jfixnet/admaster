@@ -1,5 +1,7 @@
 <script>
     let userName = '<?=$_SESSION['user_name']?>';
+    let userCode = '<?=$_SESSION['user_code']?>';
+    let isAdmin = '<?=$_SESSION['is_admin']?>';
 
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -42,48 +44,71 @@
                     })
                 }
 
+                commentList(table_name, idx);
+
             } else {
                 toastr["error"](result.message);
             }
         });
     }
 
-    $(document).ready(function() {
+    $("#btn_comment_save").click(function() {
+        commentCreate();
+    });
 
-        $("#return_list").click(function() {
-            window.location.href = "/board/board.php?table_name="+table_name;
-        });
+    function commentCreate(){
+        let process_mode = 'comment_create'
+        let comment = $("#comment").val();
 
-        $("#update").click(function() {
-            if (userName) {
-                window.location.href = `/board/board_update.php?table_name=${table_name}&idx=${idx}`;
+        $.ajax({
+            type: "post",
+            data: $("#form").serialize() + "&process_mode=" + process_mode + "&table_name=" + table_name + "&idx=" + idx + "&user_name=" + userName + "&comment=" + comment,
+            url: "/board/board_ajax.php",
+            dataType: "json",
+            cache: false,
+            async: false,
+        }).done(function(result) {
+            if (result.status) {
+
+                commentList(table_name, idx)
+
             } else {
-                window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}`;
-            }
-
-        });
-
-        $("#delete").click(function() {
-
-            if (confirm("삭제한 데이터는 복구가 불가능합니다.\r\n삭제하시겠습니까?")) {
-
-                $.ajax({
-                    type: "post",
-                    data: $("#form").serialize() + "&process_mode=delete"+ "&table_name=" + table_name+ "&idx=" + idx,
-                    url: "/board/board_ajax.php",
-                    dataType: "json",
-                    cache: false,
-                    async: false,
-                }).done(function(data) {
-                    if (data.status) {
-                        window.location.href="/board/board.php?table_name="+table_name;
-                    } else {
-                        toastr["error"](data.message);
-                    }
-                });
+                toastr["error"](result.message);
             }
         });
+    }
 
+    $("#return_list").click(function() {
+        window.location.href = "/board/board.php?table_name="+table_name;
+    });
+
+    $("#update").click(function() {
+        if (isAdmin) {
+            window.location.href = `/board/board_update.php?table_name=${table_name}&idx=${idx}`;
+        } else {
+            window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}`;
+        }
+    });
+
+    $("#delete").click(function() {
+
+        if (confirm("삭제한 데이터는 복구가 불가능합니다.\r\n삭제하시겠습니까?")) {
+
+            $.ajax({
+                type: "post",
+                data: $("#form").serialize() + "&process_mode=delete"+ "&table_name=" + table_name+ "&idx=" + idx,
+                url: "/board/board_ajax.php",
+                dataType: "json",
+                cache: false,
+                async: false,
+            }).done(function(data) {
+                if (data.status) {
+                    window.location.href="/board/board.php?table_name="+table_name;
+                } else {
+                    toastr["error"](data.message);
+                }
+            });
+        }
     });
 
     function fileViewAdd(index) {
@@ -99,7 +124,109 @@
         $(".file_view_list").append(html);
     }
 
+    function commentAdd(comment_idx, user_name, comment, datetime) {
+        let html = `
+                    <div class="row m-t-md">
+                        <div class="col-sm-2 text-left">
+                            <strong>${user_name}</strong>
+                        </div>
+                        <div class="col-sm-7 text-left">
+                            <div class="well">${comment}</div>
+                        </div>
+                        <div class="col-sm-3 text-right">
+                            <small class="text-muted m-r-sm">${datetime}</small>
+                            <button type="button" class="btn btn-xs btn-danger" onclick="commentDelete(${comment_idx})">삭제</button>
+                        </div>
+                    </div>
+                    <hr style="border-bottom: 1px solid #f4f4f4;">
+        `;
+
+        $("#comment_list").append(html);
+    }
+
+    // 의견 삭제
+    function commentDelete(comment_idx) {
+        $.ajax({
+            type: "POST",
+            data: {
+                process_mode: 'comment_delete',
+                idx: comment_idx
+            },
+            url: "/board/board_ajax.php",
+            dataType: 'json',
+            cache: false,
+            async: false,
+        }).done(function (result) {
+            if (result.status) {
+                commentList(table_name, idx)
+            } else {
+                toastr["error"](result.message,'오류');
+            }
+        });
+    }
+
+
+    function commentList(table_name, idx) {
+
+        let process_mode = 'comment_list'
+
+        $.ajax({
+            type: "GET",
+            data: {
+                process_mode : process_mode,
+                table_name : table_name,
+                idx : idx,
+            },
+            url: "/board/board_ajax.php",
+            dataType: 'json',
+            cache: false,
+            async: false,
+        }).done(function(result) {
+
+            $("#comment_list").empty();
+            $("#comment").val('');
+            if (result) {
+                $.each(result, function(key, val) {
+                    commentAdd(val.idx, val.user_name, val.comment, val.create_date);
+                });
+
+                $("#comment_total").text(result.length);
+            } else {
+
+                let html = `<div class="text-center" style="padding: 80px 0 !important">등록된 댓글이 없습니다</div>`;
+
+                $("#comment_list").append(html);
+            }
+        });
+    }
+
+    function pageSetting() {
+        let process_mode = 'page_setting'
+
+        $.ajax({
+            type: "post",
+            data: $("#form").serialize() + "&process_mode=" + process_mode+ "&table_name=" + table_name,
+            url: "/board/board_ajax.php",
+            dataType: "json",
+            cache: false,
+            async: false,
+        }).done(function(result) {
+            if (result) {
+                console.log(result);
+                $("#page_title").text(result.table_title);
+
+                if (result.comment_mode == 'Y') {
+                    $(".comment_div").show();
+                }
+
+            } else {
+                console.log('페이지 세팅 오류');
+            }
+        });
+    }
+
     $(function() {
+        pageSetting();
         list();
     });
 

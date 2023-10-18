@@ -22,10 +22,14 @@ if ($process_mode == "list") {
 
     echo json_encode($result);
 
-} else if ($process_mode == 'create') {
+}
+
+else if ($process_mode == 'create') {
 
     $table_name = sanitize($_REQUEST['table_name']);
     $table_title = sanitize($_REQUEST['table_title']);
+    $secret_mode = sanitize($_REQUEST['secret_mode']);
+    $admin_only = sanitize($_REQUEST['admin_only']);
     $memo = sanitize($_REQUEST['memo']);
 
     $sql = "
@@ -71,14 +75,15 @@ if ($process_mode == "list") {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='${memo}';
     ";
 
-    $board_create = $db->query($sql);
-
+    $board_create = $db->query($sql)->affectedRows();
 
     $sql = "
                     INSERT INTO board_management
                     SET
                             table_name = '${table_name}',
                             table_title = '${table_title}',
+                            secret_mode = '${secret_mode}',
+                            admin_only = '${admin_only}',
                             memo = '${memo}'
     ";
 
@@ -98,18 +103,24 @@ if ($process_mode == "list") {
     }
 
     echo json_encode($temp);
-} else if ($process_mode == 'update') {
+}
+
+else if ($process_mode == 'update') {
 
     $table_name = sanitize($_REQUEST['table_name']);
     $table_title = sanitize($_REQUEST['table_title']);
     $memo = sanitize($_REQUEST['memo']);
+    $secret_mode = sanitize($_REQUEST['secret_mode']);
+    $admin_only = sanitize($_REQUEST['admin_only']);
 
     $sql = "
                     UPDATE board_management
                     SET
                             table_title = '${table_title}',
+                            secret_mode = '${secret_mode}',
+                            admin_only = '${admin_only}',
                             memo = '${memo}'
-                    WHERE table_name = '${table_name}' 
+                    WHERE table_name = '${table_name}'
                     LIMIT 1
     ";
 
@@ -129,6 +140,7 @@ if ($process_mode == "list") {
     }
 
     echo json_encode($temp);
+
 } else if ($process_mode == 'view') {
 
     $table_name = sanitize($_REQUEST['table_name']);

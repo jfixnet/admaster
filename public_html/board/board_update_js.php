@@ -193,6 +193,32 @@
         }
     });
 
+    function pageSetting() {
+        let process_mode = 'page_setting'
+
+        $.ajax({
+            type: "post",
+            data: $("#form").serialize() + "&process_mode=" + process_mode+ "&table_name=" + table_name,
+            url: "/board/board_ajax.php",
+            dataType: "json",
+            cache: false,
+            async: false,
+        }).done(function(result) {
+            if (result) {
+                console.log(result);
+                $("#page_title").text(result.table_title);
+
+                if (result.comment_mode == 'Y') {
+                    $(".comment_div").show();
+                }
+
+            } else {
+                console.log('페이지 세팅 오류');
+            }
+        });
+    }
+
+
     $(function() {
         if (!userName) {
             if (!getCookie('update_status') || getCookie('update_status') != idx){
@@ -202,9 +228,8 @@
         }
 
         deleteCookie('update_status');
-
+        pageSetting();
         view();
-
     });
 
 </script>

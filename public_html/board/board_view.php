@@ -5,7 +5,11 @@
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/layout/nav_top.php"; ?>
 
 <div class="wrapper wrapper-content">
-    <div class="container mt-5" style="max-width: 1200px;">
+    <div class="container">
+
+        <div class="row mb-3">
+            <span class="font-bold" style="font-size: 20px;" id="page_title"></span>
+        </div>
 
         <div class="row mb-3">
             <div class="col-sm-12">
@@ -32,7 +36,6 @@
             </div>
         </div>
 
-        <hr>
 
         <div class="form-group">
             <label class="col-xs-2 control-label">첨부파일</label>
@@ -42,11 +45,28 @@
             </div>
         </div>
 
-        <!--<div class="row">-->
-        <!--    <div class="col-sm-12 text-center">-->
-        <!--        <button type="button" class="btn btn-primary btn-sm" id="return_list">목록으로</button>-->
-        <!--    </div>-->
-        <!--</div>-->
+        <div class="comment_div" style="display: none;">
+
+            <button type="button" class="cmt_btn"><b>댓글</b><span id="comment_total">0</span><span class="cmt_more"></span></button>
+
+            <div class="text-center" id="comment_list">
+                등록된 댓글이 없습니다
+            </div>
+
+            <div id="comment_textarea">
+                <div class="feed-activity-list">
+                    <div class="feed-element mt-3" style="border-bottom: 0px;">
+                        <div class="media-body">
+                            <textarea form="form" class="form-control well" name="comment" id="comment" rows="2" placeholder="댓글내용을 입력해주세요."></textarea>
+                            <div class="text-right">
+                                <button form="form" type="button" class="btn btn-sm btn-success" id="btn_comment_save">댓글등록</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
     </div>
 

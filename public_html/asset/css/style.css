@@ -8638,3 +8638,20 @@ body.md-skin {
 .hr2 {
   border: 1.5px solid #000078;
 }
+
+.cmt_btn {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-bottom: 1px solid #4e95c8;
+  background: #fff;
+  font-weight: bold;
+  margin: 30px 0 0px;
+  padding: 0 0 15px;
+}
+
+.required, textarea.required {
+  background-image: url(https://demo.sir.kr/gnuboard5/theme/basic/img/require.png) !important;
+  background-repeat: no-repeat !important;
+  background-position: right top !important;
+}

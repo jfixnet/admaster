@@ -16,8 +16,8 @@
             </colgroup>
             <thead>
             <tr>
-                <th class="text-center">테이블명</th>
-                <th class="text-center">게시판 이름</th>
+                <th class="text-center">테이블</th>
+                <th class="text-center">게시판 제목</th>
                 <th class="text-center">설명</th>
                 <th class="no_orderable">관리</th>
             </tr>

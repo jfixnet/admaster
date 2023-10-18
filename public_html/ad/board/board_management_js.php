@@ -27,7 +27,12 @@
             createdRow: function (row, data, index) { },
             drawCallback: function(settings, json) { },
             columns: [
-                { data: "table_name", className: "text-center" },
+                { data: "table_name", className: "text-center" ,
+                    render: function(data, type, row, meta) {
+                        let html = `<a class="article" href="/board/board.php?table_name=${data}" target='_blank'>${data}</a>`;
+                        return html;
+                    }
+                },
                 { data: "table_title", className: "text-center" },
                 { data: "memo", className: "text-left" },
                 { data: "idx", className: "text-center",
@@ -105,6 +110,8 @@
                 console.log(result)
                 $("#table_name").val(result.data.table_name);
                 $("#table_title").val(result.data.table_title);
+                $("#secret_mode").val(result.data.secret_mode);
+                $("#admin_only").val(result.data.admin_only);
                 $("#memo").val(result.data.memo);
             });
         }
