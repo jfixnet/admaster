@@ -6,7 +6,7 @@
 
 <div class="wrapper wrapper-content">
     <div class="container mt-5">
-
+        
         <div class="row mb-3" id="login_check_div">
             <div class="col-sm-6">
                 <label class="col-sm-2 form-label"><span class="text-danger">*</span> 이름</label>
@@ -30,6 +30,19 @@
                 <label class="col-sm-2 form-label"><span class="text-danger"></span> 내용</label>
                 <textarea form="form" id="content" name="content" class="form-control form-control-sm summernote"></textarea>
             </div>
+        </div>
+
+        <div class="row mb-3">
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">첨부파일</label>
+                    <div class="col-xs-10">
+
+                        <div class="file_list">
+
+                        </div>
+
+                    </div>
+                </div>
         </div>
 
         <div class="row">

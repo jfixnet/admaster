@@ -34,7 +34,8 @@ if ($process_mode == "list") {
         0 => 'idx',
         1 => 'title',
         2 => 'user_name',
-        3 => 'create_date',
+        3 => 'view_count',
+        4 => 'create_date',
     );
 
     $orderColumn = $columns[$column];
@@ -132,7 +133,18 @@ else if ($process_mode == 'create') {
     ";
 
     $result = $db->query($sql)->affectedRows();
+    $lastIDX = $db->lastInsertID();
 
+    // 첨부파일 처리
+    for ($i = 0; $i < count($_FILES['file']['name']); $i++) {
+        if ($_FILES['file']['name'][$i]) {
+            $result_temp = fileUpload($table_name, $lastIDX, "file", $_FILES['file'], $i);
+
+            if ($result_temp['status'] == "error") { // 업로드 오류
+                $message_add =  " [주의 : " . $result_temp['message'] . "]";
+            }
+        }
+    }
 
     // 분기
     if ($result != -1) {
@@ -183,6 +195,16 @@ else if ($process_mode == 'update') {
     ";
 
     $result = $db->query($sql)->affectedRows();
+
+    // 첨부파일 처리
+    for ($i = 0; $i < count($_FILES['file']['name']); $i++) {
+        if ($_FILES['file']['name'][$i]) {
+            $result_temp = fileUpload($table_name, $idx, "file", $_FILES['file'], $i);
+            if ($result_temp['status'] == "error") { // 업로드 오류
+                $message_add =  " [주의 : " . $result_temp['message'] . "]";
+            }
+        }
+    }
 
     // 분기
     if ($result != -1) {
@@ -246,6 +268,31 @@ else if ($process_mode == 'view') {
 
     $result = $db->query($sql)->fetchArray();
 
+    // 첨부파일 표시
+    $sql = "
+                    SELECT *
+                    FROM attach_file
+                    WHERE
+                                fk_table = '${table_name}'
+                                AND fk_idx = '${idx}'
+                    ORDER BY sort ASC
+    ";
+    // echo $sql;
+    $files = $db->query($sql)->fetchAll();
+    $result['files'] = $files;
+
+    $view_count = $result['view_count'] + 1;
+
+    $sql = "
+                    UPDATE ${table_name}
+                    
+                    SET view_count = '${view_count}'
+                        
+                    WHERE idx = '${idx}'
+    ";
+
+    $db->query($sql)->affectedRows();
+
     echo json_encode($result);
 }
 
@@ -296,6 +343,31 @@ else if ($process_mode == 'password_check') {
         "check" => enc($result['write_password']),
         "message" => "확인되었습니다.",
     );
+
+    echo json_encode($temp);
+}
+
+// 첨부파일 삭제
+else if ($process_mode == "delete_file") {
+
+    // 변수 정리
+    $code = sanitize($_REQUEST['code']);
+
+    // 업로드 파일 삭제
+    $result = fileRemoveWithCode($code);
+
+    // 분기
+    if ($result != -1) {
+        $temp = array(
+            "status" => 1,
+            "message" => "삭제되었습니다.",
+        );
+    } else {
+        $temp = array(
+            "status" => 0,
+            "message" => "삭제 오류",
+        );
+    }
 
     echo json_encode($temp);
 }

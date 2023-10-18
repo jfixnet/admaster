@@ -12,9 +12,10 @@
                 <h2><span class="font-bold" id="title"></span></h2>
             </div>
         </div>
+
         <div class="row mb-3">
             <div class="col-sm-6">
-                <span class="m-r-sm font-bold" id="user_name"></span><i class="fa fa-clock"></i> <span id="create_date"></span>
+                <span class="m-r-sm font-bold" id="user_name"></span> | <span id="create_date"></span> | <span id="view_count"></span>
             </div>
             <div class="col-sm-6 text-right" style="font-size: 15px;">
                 <a id="return_list" class="m-r-sm" style="color:#676a6c" title="목록으로"><i class="fa fa-list"></i></a>
@@ -31,13 +32,22 @@
             </div>
         </div>
 
+        <hr>
+
+        <div class="form-group">
+            <label class="col-xs-2 control-label">첨부파일</label>
+            <div class="col-xs-10">
+                <div class="file_view_list">
+                </div>
+            </div>
+        </div>
+
         <!--<div class="row">-->
         <!--    <div class="col-sm-12 text-center">-->
         <!--        <button type="button" class="btn btn-primary btn-sm" id="return_list">목록으로</button>-->
         <!--    </div>-->
         <!--</div>-->
 
-        <hr>
     </div>
 
 <form id="form" name="form">

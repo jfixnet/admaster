@@ -28,7 +28,7 @@ $dbname = 'ad';
 $db = new Database($dbhost, $dbuser, $dbpasswd, $dbname);
 
 // Upload
-$upload_root = $_SERVER['DOCUMENT_ROOT'] . "/img"; // Root Folder
+$upload_root = $_SERVER['DOCUMENT_ROOT'] . "/upload"; // Root Folder
 $upload_file_size = 30; // 메가
 
 // 세션유지시간 변경

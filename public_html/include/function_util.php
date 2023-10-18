@@ -213,3 +213,158 @@ function createYearRangeArray($startYear, $endYear) {
 
     return $yearRange;
 }
+
+// 파일 업로드
+function fileUpload($table, $idx, $type, $file, $sort) {
+    global $db;
+    global $upload_root; // 업로드 폴더
+    global $upload_file_size; // 업로드 제한 용량
+
+    // 허용 확장자
+    switch ($type) {
+        case "image" :
+            $allow_extension = array('jpg', 'jpeg', 'png', 'gif'); // 허용 확장자
+            break;
+
+        case "file" :
+        default :
+            $allow_extension = array('jpg', 'jpeg', 'png', 'gif', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'hwp', 'zip'); // 허용 확장자
+            break;
+    }
+
+    // 파일 업로드 관련 변수
+    $file_name = trim($file['name'][$sort]); // 파일명
+    $file_name_array = explode('.', $file_name); // 확장자 추출
+    $file_extension = strtolower( end( $file_name_array ) ); // 확장자
+    $tmp_name = $file['tmp_name'][$sort]; // 임시 파일명
+    $file_tmp_name = str_replace("/tmp/", "", $tmp_name) . '-' . $sort . '-' . date("YmdHis"); // 조작된 임시 파일명
+    $file_size = $file['size'][$sort]; // 용량
+
+    // 기타 설정
+    $target =  $upload_root . "/" . $file_tmp_name; // 저장 대상
+    $max_size = $upload_file_size; // 제한 용량 (메가)
+
+    // 확장자 체크
+    if (in_array($file_extension, $allow_extension)) {
+
+        // 용량 체크
+        if ($file_size) {
+
+            $max_size = $max_size * 1024 * 1024; // 바이트로 계산 1MB = 1024KB = 1048576Byte
+
+            if ($file_size > $max_size) {
+                return array("status" => "error", "message" => "파일 용량 초과");
+            }
+
+        } else {
+            return array("status" => "error", "message" => "파일 오류");
+        }
+
+        // 업로드
+        if (!move_uploaded_file($tmp_name, $target)) {
+            return array("status" => "error", "message" => "업로드 오류");
+        }
+
+    } else {
+        return array("status" => "error", "message" => "파일 확장자 오류");
+    }
+
+    $sql = "
+		            INSERT INTO attach_file
+		            SET
+		                    fk_table = '${table}',
+		                    fk_idx = '${idx}',
+		                    sort = '${sort}',
+
+		                    file_extension = '${file_extension}',
+		                    file_name = '${file_name}',
+		                    file_tmp_name = '${file_tmp_name}',
+		                    file_size = '${file_size}',
+
+                            create_employee_code = '${_SESSION['employee_code']}'
+    ";
+    $result = $db->query($sql)->affectedRows();
+    $lastIDX = $db->lastInsertID();
+
+    // 과거 데이터 처리
+    if ($result != -1) {
+
+        // 과거 데이터 검색
+        $sql = "
+			            SELECT *
+			            FROM attach_file
+			            WHERE
+				                    fk_table = '${table}'
+				                    AND fk_idx = '${idx}'
+				                    AND sort = '${sort}'
+				                    AND idx < '${lastIDX}'
+	    ";
+        $list = $db->query($sql)->fetchAll();
+
+        foreach ($list as $item) {
+
+            // 과거 데이터 삭제
+            $sql = "
+				            DELETE FROM attach_file
+				            WHERE idx = '${item['idx']}'
+				            LIMIT 1
+		    ";
+            $db->query($sql);
+
+            // 파일 삭제
+            @unlink($upload_root . "/" . $item['file_tmp_name']);
+        }
+    }
+
+    return $result;
+}
+
+// 업로드 파일 삭제 (DB 테이블을 이용한 삭제)
+function fileRemove($table, $idx) {
+    global $db;
+    global $upload_root; // 업로드 폴더
+
+    // 과거 데이터 검색
+    $sql = "
+		            SELECT *
+		            FROM attach_file
+		            WHERE
+			                    fk_table = '${table}'
+			                    AND fk_idx = '${idx}'
+    ";
+    $list = $db->query($sql)->fetchAll();
+    foreach ($list as $item) {
+
+        // 과거 데이터 삭제
+        $sql = "
+			            DELETE FROM attach_file
+			            WHERE idx = '${item['idx']}'
+			            LIMIT 1
+	    ";
+        $result =$db->query($sql);
+
+        // 파일 삭제
+        @unlink($upload_root . "/" . $item['file_tmp_name']);
+    }
+
+    return $result;
+}
+
+// 업로드 파일 삭제 (실제 파일명을 이용한 삭제)
+function fileRemoveWithCode($code) {
+    global $db;
+    global $upload_root; // 업로드 폴더
+
+    // 데이터 삭제
+    $sql = "
+		            DELETE FROM attach_file
+		            WHERE file_tmp_name = '${code}'
+		            LIMIT 1
+	";
+    $result =$db->query($sql)->affectedRows();
+
+    // 파일 삭제
+    @unlink($upload_root . "/" . $code);
+
+    return $result;
+}

@@ -32,6 +32,19 @@
             </div>
         </div>
 
+        <div class="row mb-3">
+            <div class="form-group">
+                <label class="col-xs-2 control-label">첨부파일</label>
+                <div class="col-xs-10">
+
+                    <div class="file_list">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-sm-12 text-center">
                 <button form="form" type="button" class="btn btn-default btn-sm" id="return_list">취소</button>

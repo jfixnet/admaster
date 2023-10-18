@@ -57,9 +57,10 @@ if ($process_mode == "list") {
                 CREATE TABLE `${table_name}` (
               `idx` int(10) unsigned NOT NULL AUTO_INCREMENT,
               `title` varchar(255) NOT NULL COMMENT '제목',
-              `content` longtext NOT NULL COMMENT '내용',
+              `content` longtext DEFAULT NULL COMMENT '내용',
               `user_name` varchar(25) NOT NULL COMMENT '작성자명',
-              `write_password` varchar(255) NOT NULL COMMENT '게시글 비밀번호',
+              `write_password` varchar(255) DEFAULT NULL COMMENT '글 비밀번호',
+              `view_count` int(10) DEFAULT 0 COMMENT '조회수',
               
               `create_date` datetime DEFAULT current_timestamp(),
               `create_user_code` varchar(25) DEFAULT NULL,

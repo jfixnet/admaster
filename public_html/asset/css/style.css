@@ -8635,3 +8635,6 @@ body.md-skin {
   align-items: center;
   justify-content: space-between;
 }
+.hr2 {
+  border: 1.5px solid #000078;
+}

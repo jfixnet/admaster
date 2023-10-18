@@ -43,6 +43,7 @@
                     }
                 },
                 { data: "user_name", className: "text-center" },
+                { data: "view_count", className: "text-center" },
                 { data: "create_date", className: "text-center",  render: function(data, type, row, meta) {
                         let html = data.slice(0,10);
                         return html;
