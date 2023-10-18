@@ -16,11 +16,17 @@ if ($process_mode == "list") {
     $search = $_GET['search']['value'];
     $order = $_GET['order'];
     $column = $order[0]['column'];
+    
+    // 기본 정렬
     if (!$column) {
         $column = 0;
     }
-    $dir = $order[0]['dir'];
 
+    $dir = $order[0]['dir'];
+    if (!$dir) {
+        $dir = 'desc';
+    }
+    
     $sql_where = " AND create_date BETWEEN  '${srch_start_date} 00:00:00' AND '${srch_end_date} 23:59:59'";
 
     $columns = array(

@@ -15,6 +15,13 @@
 
     <div class="row mb-3">
         <div class="col-sm-12">
+            <label class="col-sm-2 form-label"><span class="text-danger"></span> 게시판 이름</label>
+            <input form="form" type="text" id="table_title" name="table_title" class="form-control form-control-sm" autocomplete="off">
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-sm-12">
             <label class="col-sm-2 form-label"><span class="text-danger"></span> 설명</label>
             <input form="form" type="text" id="memo" name="memo" class="form-control form-control-sm" autocomplete="off">
         </div>
@@ -23,7 +30,7 @@
     <div class="row">
         <div class="col-sm-12 text-center">
             <button form="form" type="button" class="btn btn-default btn-sm" id="return_list">취소</button>
-            <button form="form" type="submit" class="btn btn-primary btn-sm">저장하기</button>
+            <button form="form" type="submit" class="btn btn-primary btn-sm">생성</button>
         </div>
     </div>
 

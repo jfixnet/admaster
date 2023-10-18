@@ -28,6 +28,7 @@
             drawCallback: function(settings, json) { },
             columns: [
                 { data: "table_name", className: "text-center" },
+                { data: "table_title", className: "text-center" },
                 { data: "memo", className: "text-left" },
                 { data: "idx", className: "text-center",
                     render: function(data, type, row, meta) {
@@ -69,11 +70,12 @@
             async: false,
         }).done(function(data) {
             if (data.status) {
-                toastr["success"](data.message);
-
-                setInterval(function () {
-                    window.location.href="/ad/board/board_management.php"
-                }, 3000);
+                let alertText = '생성'
+                if (process_mode == 'update') {
+                    alertText = '수정'
+                }
+                alert('게시판이 '+ alertText + '되었습니다.');
+                window.location.href="/ad/board/board_management.php"
             } else {
                 toastr["error"](data.message);
             }
@@ -102,6 +104,7 @@
             }).done(function(result) {
                 console.log(result)
                 $("#table_name").val(result.data.table_name);
+                $("#table_title").val(result.data.table_title);
                 $("#memo").val(result.data.memo);
             });
         }

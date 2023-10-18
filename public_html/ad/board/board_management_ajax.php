@@ -25,6 +25,7 @@ if ($process_mode == "list") {
 } else if ($process_mode == 'create') {
 
     $table_name = sanitize($_REQUEST['table_name']);
+    $table_title = sanitize($_REQUEST['table_title']);
     $memo = sanitize($_REQUEST['memo']);
 
     $sql = "
@@ -77,6 +78,7 @@ if ($process_mode == "list") {
                     INSERT INTO board_management
                     SET
                             table_name = '${table_name}',
+                            table_title = '${table_title}',
                             memo = '${memo}'
     ";
 
@@ -99,11 +101,13 @@ if ($process_mode == "list") {
 } else if ($process_mode == 'update') {
 
     $table_name = sanitize($_REQUEST['table_name']);
+    $table_title = sanitize($_REQUEST['table_title']);
     $memo = sanitize($_REQUEST['memo']);
 
     $sql = "
                     UPDATE board_management
                     SET
+                            table_title = '${table_title}',
                             memo = '${memo}'
                     WHERE table_name = '${table_name}' 
                     LIMIT 1

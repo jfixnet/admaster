@@ -10,12 +10,14 @@
         <table id="dataTables_1" class="table table-striped table-bordered table-hover" style="width: 100%; height: auto;">
             <colgroup>
                 <col style="width: 400px">
+                <col style="width: 400px">
                 <col style="">
                 <col style="width: 100px">
             </colgroup>
             <thead>
             <tr>
                 <th class="text-center">테이블명</th>
+                <th class="text-center">게시판 이름</th>
                 <th class="text-center">설명</th>
                 <th class="no_orderable">관리</th>
             </tr>
