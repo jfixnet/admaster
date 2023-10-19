@@ -22,6 +22,15 @@
             </div>
         </div>
 
+        <div class="row mb-3" id="secret_div">
+            <div class="col-sm-12">
+                <div class="custom-control custom-checkbox">
+                    <input form="form" type="checkbox" class="custom-control-input" id="is_secret" name="is_secret" style="width: 20px; height: 20px;vertical-align: middle;  position: relative;  bottom: 3px;">
+                    <label class="custom-control-label" for="is_secret" data-toggle="popover" data-trigger="hover" data-placement="top" title="비밀글일 경우 체크해주세요."  data-original-title="">&nbsp비밀글여부</label>
+                </div>
+            </div>
+        </div>
+
         <div class="row mb-3">
             <div class="col-sm-12">
                 <!--<label class="col-sm-2 form-label"><span class="text-danger">*</span> 제목</label>-->

@@ -36,7 +36,6 @@
             </div>
         </div>
 
-
         <div class="form-group">
             <label class="col-xs-2 control-label">첨부파일</label>
             <div class="col-xs-10">
@@ -45,7 +44,7 @@
             </div>
         </div>
 
-        <div class="comment_div" style="display: none;">
+        <div id="comment_div" style="display: none;">
 
             <button type="button" class="cmt_btn"><b>댓글</b><span id="comment_total">0</span><span class="cmt_more"></span></button>
 
@@ -70,10 +69,10 @@
 
     </div>
 
-<form id="form" name="form">
-    <input type="hidden" id="idx" name="idx">
-    <input type="hidden" id="form_table_name" name="form_table_name">
-</form>
+    <form id="form" name="form">
+        <input type="hidden" id="idx" name="idx">
+        <input type="hidden" id="form_table_name" name="form_table_name">
+    </form>
 
 </div>
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/board/board_view_js.php"; ?>

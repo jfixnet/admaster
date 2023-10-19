@@ -41,11 +41,22 @@
                 }},
                 { data: "title", className: "text-left" ,  render: function(data, type, row, meta) {
                         let secret_icon = ``;
+                        let comment_icon = ``;
                         if (row.is_secret == "Y") {
                             secret_icon = `<i class="fa fa-lock"></i>`;
                         }
+                        if (row.comment_count && row.comment_count > 0) {
+                            comment_icon = `<span style="color: red; font-weight: bold;">[${row.comment_count}]</span>`;
+                        }
 
-                        let html = `<a class="article" href="board_view.php?table_name=${table_name}&idx=${row.idx}">${data} ${secret_icon}</a>`;
+                        let href = `board_view.php?table_name=${table_name}&idx=${row.idx}&type=v`;
+                        if (row.is_secret == 'Y') {
+                            if (!isAdmin) {
+                                href = `/board/board_password.php?table_name=${table_name}&idx=${row.idx}&type=s`;
+                            }
+                        }
+                        let html = `<a class="article" href="${href}">${data} ${secret_icon} ${comment_icon}</a>`;
+
                         return html;
                     }
                 },
@@ -86,10 +97,8 @@
         });
     }
 
-    $(document).ready(function() {
-        $("#board_write").click(function() {
-            window.location.href = "/board/board_write.php?table_name="+table_name;
-        });
+    $("#board_write").click(function() {
+        window.location.href = "/board/board_write.php?table_name="+table_name;
     });
 
     $(function() {

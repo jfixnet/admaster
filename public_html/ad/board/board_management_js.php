@@ -112,6 +112,7 @@
                 $("#table_title").val(result.data.table_title);
                 $("#secret_mode").val(result.data.secret_mode);
                 $("#admin_only").val(result.data.admin_only);
+                $("#comment_mode").val(result.data.comment_mode);
                 $("#memo").val(result.data.memo);
             });
         }

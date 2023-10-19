@@ -30,6 +30,7 @@ else if ($process_mode == 'create') {
     $table_title = sanitize($_REQUEST['table_title']);
     $secret_mode = sanitize($_REQUEST['secret_mode']);
     $admin_only = sanitize($_REQUEST['admin_only']);
+    $comment_mode = sanitize($_REQUEST['comment_mode']);
     $memo = sanitize($_REQUEST['memo']);
 
     $sql = "
@@ -84,6 +85,7 @@ else if ($process_mode == 'create') {
                             table_title = '${table_title}',
                             secret_mode = '${secret_mode}',
                             admin_only = '${admin_only}',
+                            comment_mode = '${comment_mode}',
                             memo = '${memo}'
     ";
 
@@ -112,6 +114,7 @@ else if ($process_mode == 'update') {
     $memo = sanitize($_REQUEST['memo']);
     $secret_mode = sanitize($_REQUEST['secret_mode']);
     $admin_only = sanitize($_REQUEST['admin_only']);
+    $comment_mode = sanitize($_REQUEST['comment_mode']);
 
     $sql = "
                     UPDATE board_management
@@ -119,6 +122,7 @@ else if ($process_mode == 'update') {
                             table_title = '${table_title}',
                             secret_mode = '${secret_mode}',
                             admin_only = '${admin_only}',
+                            comment_mode = '${comment_mode}',
                             memo = '${memo}'
                     WHERE table_name = '${table_name}'
                     LIMIT 1

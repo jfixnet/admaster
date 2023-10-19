@@ -27,15 +27,15 @@ if ($process_mode == "list") {
 
     $sql_where = '';
     if ($srch_keyword) {
-        $sql_where .= " AND $srch_key LIKE '%{$srch_keyword}%' ";
+        $sql_where .= " AND a.$srch_key LIKE '%{$srch_keyword}%' ";
     }
 
     $columns = array(
-        0 => 'idx',
-        1 => 'title',
-        2 => 'user_name',
-        3 => 'view_count',
-        4 => 'create_date',
+        0 => 'a.idx',
+        1 => 'a.title',
+        2 => 'a.user_name',
+        3 => 'a.view_count',
+        4 => 'a.create_date',
     );
 
     $orderColumn = $columns[$column];
@@ -73,9 +73,11 @@ if ($process_mode == "list") {
 
     // 데이터 쿼리
     $sql = "
-                    SELECT *, (select count(*) from ${table_name}) as total_count
+                    SELECT a.*, 
+                           (select count(*) from ${table_name}) as total_count, 
+                           (select count(*) from comment where table_name = '${table_name}' and fk_table_idx = a.idx  ) as comment_count
                     
-                    FROM ${table_name}
+                    FROM ${table_name} as a
                     
                     WHERE
                         1 = 1
@@ -116,9 +118,15 @@ else if ($process_mode == 'create') {
     $user_name = $_REQUEST['user_name'];
     $write_password = $_REQUEST['write_password'];
     $write_password = enc($write_password);
+    $is_secret_val = $_REQUEST['is_secret'];
 
     if ($_SESSION['user_name']) {
         $user_name = $_SESSION['user_name'];
+    }
+
+    $is_secret = 'N';
+    if ($is_secret_val == 'on') {
+        $is_secret = 'Y';
     }
 
     $sql = "
@@ -129,6 +137,7 @@ else if ($process_mode == 'create') {
                         content = '${content}',
                         user_name = '${user_name}',
                         write_password = '${write_password}',
+                        is_secret = '${is_secret}',
                         create_user_code = '${_SESSION['user_code']}'
     ";
 
@@ -170,6 +179,7 @@ else if ($process_mode == 'update') {
     $content = $_REQUEST['content'];
     $user_name = $_REQUEST['user_name'];
     $write_password = $_REQUEST['write_password'];
+    $is_secret_val = $_REQUEST['is_secret'];
 
     $set_write_password = '';
     if ($write_password) {
@@ -181,13 +191,19 @@ else if ($process_mode == 'update') {
         $user_name = $_SESSION['user_name'];
     }
 
+    $is_secret = 'N';
+    if ($is_secret_val == 'on') {
+        $is_secret = 'Y';
+    }
+
     $sql = "
                     UPDATE ${table_name}
                     SET
                             title = '${title}',
                             content = '${content}',
-                            user_name = '${user_name}'
-                            
+                            user_name = '${user_name}',
+                            is_secret = '${is_secret}'
+                    
                             ${set_write_password}
                     
                     WHERE idx = '${idx}' 

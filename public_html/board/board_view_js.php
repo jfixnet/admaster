@@ -12,8 +12,9 @@
 
     let table_name = getParameterByName('table_name');
     let idx = getParameterByName('idx');
+    let type = getParameterByName('type');
 
-    function list() {
+    function view() {
         let process_mode = 'view'
 
         $.ajax({
@@ -45,7 +46,6 @@
                 }
 
                 commentList(table_name, idx);
-
             } else {
                 toastr["error"](result.message);
             }
@@ -69,9 +69,7 @@
             async: false,
         }).done(function(result) {
             if (result.status) {
-
                 commentList(table_name, idx)
-
             } else {
                 toastr["error"](result.message);
             }
@@ -80,6 +78,7 @@
 
     $("#return_list").click(function() {
         window.location.href = "/board/board.php?table_name="+table_name;
+        return false;
     });
 
     $("#update").click(function() {
@@ -88,10 +87,19 @@
         } else {
             window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}`;
         }
+        return false;
     });
 
     $("#delete").click(function() {
+        if (isAdmin) {
+            deleteBoard();
+            return false;
+        }
+        window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}&type=d`;
+        return false;
+    });
 
+    function deleteBoard(){
         if (confirm("삭제한 데이터는 복구가 불가능합니다.\r\n삭제하시겠습니까?")) {
 
             $.ajax({
@@ -109,7 +117,7 @@
                 }
             });
         }
-    });
+    }
 
     function fileViewAdd(index) {
         let html = '';
@@ -165,7 +173,6 @@
         });
     }
 
-
     function commentList(table_name, idx) {
 
         let process_mode = 'comment_list'
@@ -189,12 +196,9 @@
                 $.each(result, function(key, val) {
                     commentAdd(val.idx, val.user_name, val.comment, val.create_date);
                 });
-
                 $("#comment_total").text(result.length);
             } else {
-
                 let html = `<div class="text-center" style="padding: 80px 0 !important">등록된 댓글이 없습니다</div>`;
-
                 $("#comment_list").append(html);
             }
         });
@@ -215,8 +219,9 @@
                 console.log(result);
                 $("#page_title").text(result.table_title);
 
+                $("#comment_div").hide();
                 if (result.comment_mode == 'Y') {
-                    $(".comment_div").show();
+                    $("#comment_div").show();
                 }
 
             } else {
@@ -226,8 +231,19 @@
     }
 
     $(function() {
+        if (type == 's') {
+            if (!userName) {
+                if (!getCookie('view_status') || getCookie('view_status') != idx){
+                    window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}&type=v`;
+                    return false;
+                }
+            }
+        }
+
         pageSetting();
-        list();
+        view();
+
+        deleteCookie('view_status');
     });
 
 </script>

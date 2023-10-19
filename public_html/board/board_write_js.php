@@ -164,6 +164,11 @@
                     $(".comment_div").show();
                 }
 
+                $("#secret_div").show();
+                if (result.secret_mode == 'N') {
+                    $("#secret_div").hide();
+                }
+
                 $("#is_secret").prop("checked", false);
                 if (result.secret_mode == 'A') {
                     $("#is_secret").prop("checked", true);

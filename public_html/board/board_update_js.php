@@ -1,10 +1,10 @@
 <script>
     let userName = '<?=$_SESSION['user_name']?>';
 
-    $("#login_check_div").show();
-    if (userName) {
-        $("#login_check_div").hide();
-    }
+    // $("#login_check_div").show();
+    // if (userName) {
+    //     $("#login_check_div").hide();
+    // }
 
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -67,6 +67,12 @@
                 $("#user_name").val(result.user_name);
                 $("#title").val(result.title);
                 $(".summernote").summernote("code", result.content); // 에디터 처리
+
+                $("#is_secret").prop("checked", false);
+                if (result.is_secret == 'Y') {
+                    $("#is_secret").prop("checked", true);
+                }
+
                 $("#update_btn").show();
 
                 // 첨부파일 표시
