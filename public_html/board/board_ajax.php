@@ -312,7 +312,7 @@ else if ($process_mode == 'view') {
     echo json_encode($result);
 }
 
-else if ($process_mode == 'password_check') {
+else if ($process_mode == 'board_password_check') {
 
     $table_name = sanitize($_REQUEST['table_name']);
     $idx = sanitize($_REQUEST['idx']);

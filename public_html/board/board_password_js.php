@@ -13,11 +13,11 @@
     let type = getParameterByName('type');
 
     $("#write_password_check").click(function() {
-       passwordCheck();
+       boardPasswordCheck();
     });
 
-    function passwordCheck() {
-        let process_mode = 'password_check'
+    function boardPasswordCheck() {
+        let process_mode = 'board_password_check'
         let write_password = $("#write_password").val();
 
         $.ajax({

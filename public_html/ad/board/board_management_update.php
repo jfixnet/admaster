@@ -8,13 +8,13 @@
 
     <div class="row mb-3">
         <div class="col-sm-6">
-            <label class="col-sm-2 form-label"><span class="text-danger">*</span> 테이블</label>
-            <input form="form" type="text" id="table_name" name="table_name" class="form-control form-control-sm" autocomplete="off">
+            <label class="col-sm-2 form-label"><span class="text-danger"></span> 테이블</label>
+            <input form="form" type="text" id="table_name" name="table_name" class="form-control form-control-sm required" autocomplete="off" required>
         </div>
 
         <div class="col-sm-6">
             <label class="col-sm-2 form-label"><span class="text-danger"></span> 게시판 제목</label>
-            <input form="form" type="text" id="table_title" name="table_title" class="form-control form-control-sm" autocomplete="off">
+            <input form="form" type="text" id="table_title" name="table_title" class="form-control form-control-sm required" autocomplete="off" required>
         </div>
     </div>
 
@@ -64,4 +64,4 @@
     <input type="hidden" id="form_table_name" name="form_table_name">
 </form>
 
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . "/ad/board/board_management_js.php"; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . "/ad/board/board_management_update_js.php"; ?>

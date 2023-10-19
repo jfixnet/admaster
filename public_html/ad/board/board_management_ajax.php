@@ -32,7 +32,8 @@ else if ($process_mode == 'create') {
     $admin_only = sanitize($_REQUEST['admin_only']);
     $comment_mode = sanitize($_REQUEST['comment_mode']);
     $memo = sanitize($_REQUEST['memo']);
-
+var_dump($admin_only);
+exit;
     $sql = "
                     SELECT *
                     
