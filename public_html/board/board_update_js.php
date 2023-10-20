@@ -15,20 +15,23 @@
 
     let table_name = getParameterByName('table_name');
     let idx = getParameterByName('idx');
+    let type = getParameterByName('type');
 
     // 모달 저장
     $("#form").on("submit", function() {
-        create();
+        update();
         return false;
     });
 
     // 모달 저장
-    function create() {
+    function update() {
         let process_mode = "update"
 
         $("#content").val( $(".summernote").summernote("code") ); // 에디터 처리
         $("#idx").val( idx ); // 에디터 처리
         $("#form_table_name").val( table_name ); // 에디터 처리
+
+        $("#is_secret").prop("disabled", false);
 
         var formData = new FormData( $("#form")[0] );
         formData.append("process_mode", process_mode);
@@ -214,8 +217,8 @@
                 console.log(result);
                 $("#page_title").text(result.table_title);
 
-                if (result.comment_mode == 'Y') {
-                    $(".comment_div").show();
+                if (result.secret_mode == 'A') {
+                    $("#is_secret").prop("disabled", true);
                 }
 
             } else {
@@ -224,12 +227,14 @@
         });
     }
 
-
     $(function() {
-        if (!userName) {
-            if (!getCookie('update_status') || getCookie('update_status') != idx){
-                window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}`;
-                return false;
+
+        if (type == 's') {
+            if (!userName) {
+                if (!getCookie('view_status') || getCookie('view_status') != idx){
+                    window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}&type=v`;
+                    return false;
+                }
             }
         }
 

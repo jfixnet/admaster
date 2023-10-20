@@ -30,6 +30,8 @@
         $("#content").val( $(".summernote").summernote("code") ); // 에디터 처리
         $("#idx").val( idx ); // 에디터 처리
         $("#form_table_name").val( table_name ); // 에디터 처리
+        $("#is_secret").prop("disabled", false);
+
         let user_name = $("#user_name").val();
 
         var formData = new FormData( $("#form")[0] );
@@ -159,10 +161,6 @@
             if (result) {
                 console.log(result);
                 $("#page_title").text(result.table_title);
-
-                if (result.comment_mode == 'Y') {
-                    $(".comment_div").show();
-                }
 
                 $("#secret_div").show();
                 if (result.secret_mode == 'N') {

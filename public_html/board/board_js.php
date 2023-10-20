@@ -1,6 +1,7 @@
 <script>
     let isAdmin = '<?=$_SESSION['is_admin']?>';
 
+    console.log(isAdmin);
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),

@@ -46,13 +46,15 @@
 
         <div id="comment_div" style="display: none;">
 
-            <button type="button" class="cmt_btn"><b>댓글</b><span id="comment_total">0</span><span class="cmt_more"></span></button>
+            <div class="div_comment_list">
+                <button type="button" class="cmt_btn"><b>댓글</b><span id="comment_total">0</span><span class="cmt_more"></span></button>
 
-            <div class="text-center" id="comment_list">
-                등록된 댓글이 없습니다
+                <div class="text-center" id="comment_list">
+                    등록된 댓글이 없습니다
+                </div>
             </div>
 
-            <div id="comment_textarea">
+            <div class="div_comment_textarea">
                 <div class="feed-activity-list">
                     <div class="feed-element mt-3" style="border-bottom: 0px;">
                         <div class="media-body">

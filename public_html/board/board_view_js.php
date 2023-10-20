@@ -85,7 +85,11 @@
         if (isAdmin) {
             window.location.href = `/board/board_update.php?table_name=${table_name}&idx=${idx}`;
         } else {
-            window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}`;
+            // if (type == 'v') {
+            //     window.location.href = `/board/board_update.php?table_name=${table_name}&idx=${idx}`;
+            // } else {
+                window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}`;
+            // }
         }
         return false;
     });
@@ -220,8 +224,10 @@
                 $("#page_title").text(result.table_title);
 
                 $("#comment_div").hide();
+                $(".div_comment_textarea").hide();
                 if (result.comment_mode == 'Y') {
                     $("#comment_div").show();
+                    $(".div_comment_textarea").show();
                 }
 
             } else {
