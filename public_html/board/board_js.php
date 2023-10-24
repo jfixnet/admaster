@@ -44,10 +44,10 @@
                         let secret_icon = ``;
                         let comment_icon = ``;
                         if (row.is_secret == "Y") {
-                            secret_icon = `<i class="fa fa-lock"></i>`;
+                            secret_icon = `&nbsp&nbsp<i class="fa fa-lock"></i>`;
                         }
                         if (row.comment_count && row.comment_count > 0) {
-                            comment_icon = `<span style="color: red; font-weight: bold;">[${row.comment_count}]</span>`;
+                            comment_icon = `&nbsp<span style="color: red; font-weight: bold;">[${row.comment_count}]</span>`;
                         }
 
                         let href = `board_view.php?table_name=${table_name}&idx=${row.idx}&type=v`;

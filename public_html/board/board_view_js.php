@@ -224,10 +224,13 @@
                 $("#page_title").text(result.table_title);
 
                 $("#comment_div").hide();
-                $(".div_comment_textarea").hide();
                 if (result.comment_mode == 'Y') {
                     $("#comment_div").show();
                     $(".div_comment_textarea").show();
+                }
+
+                if (!isAdmin) {
+                    $(".div_comment_textarea").hide();
                 }
 
             } else {
