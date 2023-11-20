@@ -14,7 +14,7 @@ if ($process_mode == "login") {
 
     $sql = "
 				SELECT *
-				FROM users
+				FROM jf_users
 				WHERE
 						code = ?
                     AND password = ?
@@ -34,7 +34,19 @@ if ($process_mode == "login") {
             echo json_encode($temp);
             exit;
         }
+        if ($result['is_admin'] == 'N') {
 
+            $temp = array(
+                "status" => 0,
+                "message" => '비활성화된 계정입니다. 관리자에게 문의해주세요.',
+                "redirect" => "",
+            );
+
+            echo json_encode($temp);
+            exit;
+        }
+
+        session_start();
 
         $_SESSION['user_idx'] = $result['idx'];
         $_SESSION['user_code'] = $result['code'];
@@ -44,7 +56,7 @@ if ($process_mode == "login") {
         $redirect = "/ad/index.php";
 
         $sql = "
-					INSERT INTO login_history
+					INSERT INTO jf_login_history
 					SET user_code = '${result['code']}'
 		";
         $result = $db->query($sql);

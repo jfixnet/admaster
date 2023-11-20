@@ -8,7 +8,7 @@ $code = sanitize($_REQUEST['code']);
 // 첨부파일 표시
 $sql = "
                 SELECT *
-                FROM attach_file
+                FROM jf_attach_file
                 WHERE file_tmp_name = '$code'
                 LIMIT 1
 ";

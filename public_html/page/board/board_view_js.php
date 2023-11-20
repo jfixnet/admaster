@@ -20,7 +20,7 @@
         $.ajax({
             type: "post",
             data: $("#form").serialize() + "&process_mode=" + process_mode+ "&table_name=" + table_name+ "&idx=" + idx,
-            url: "/board/board_ajax.php",
+            url: "/page/board/board_ajax.php",
             dataType: "json",
             cache: false,
             async: false,
@@ -63,7 +63,7 @@
         $.ajax({
             type: "post",
             data: $("#form").serialize() + "&process_mode=" + process_mode + "&table_name=" + table_name + "&idx=" + idx + "&user_name=" + userName + "&comment=" + comment,
-            url: "/board/board_ajax.php",
+            url: "/page/board/board_ajax.php",
             dataType: "json",
             cache: false,
             async: false,
@@ -77,29 +77,29 @@
     }
 
     $("#return_list").click(function() {
-        window.location.href = "/board/board.php?table_name="+table_name;
+        window.location.href = "/page/board/board.php?table_name="+table_name;
         return false;
     });
 
     $("#update").click(function() {
-        if (isAdmin) {
-            window.location.href = `/board/board_update.php?table_name=${table_name}&idx=${idx}`;
+        if (isAdmin == 'Y') {
+            window.location.href = `/page/board/board_update.php?table_name=${table_name}&idx=${idx}`;
         } else {
             // if (type == 'v') {
             //     window.location.href = `/board/board_update.php?table_name=${table_name}&idx=${idx}`;
             // } else {
-                window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}`;
+                window.location.href = `/page/board/board_password.php?table_name=${table_name}&idx=${idx}`;
             // }
         }
         return false;
     });
 
     $("#delete").click(function() {
-        if (isAdmin) {
+        if (isAdmin == 'Y') {
             deleteBoard();
             return false;
         }
-        window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}&type=d`;
+        window.location.href = `/page/board/board_password.php?table_name=${table_name}&idx=${idx}&type=d`;
         return false;
     });
 
@@ -109,13 +109,13 @@
             $.ajax({
                 type: "post",
                 data: $("#form").serialize() + "&process_mode=delete"+ "&table_name=" + table_name+ "&idx=" + idx,
-                url: "/board/board_ajax.php",
+                url: "/page/board/board_ajax.php",
                 dataType: "json",
                 cache: false,
                 async: false,
             }).done(function(data) {
                 if (data.status) {
-                    window.location.href="/board/board.php?table_name="+table_name;
+                    window.location.href="/page/board/board.php?table_name="+table_name;
                 } else {
                     toastr["error"](data.message);
                 }
@@ -164,7 +164,7 @@
                 process_mode: 'comment_delete',
                 idx: comment_idx
             },
-            url: "/board/board_ajax.php",
+            url: "/page/board/board_ajax.php",
             dataType: 'json',
             cache: false,
             async: false,
@@ -188,7 +188,7 @@
                 table_name : table_name,
                 idx : idx,
             },
-            url: "/board/board_ajax.php",
+            url: "/page/board/board_ajax.php",
             dataType: 'json',
             cache: false,
             async: false,
@@ -214,7 +214,7 @@
         $.ajax({
             type: "post",
             data: $("#form").serialize() + "&process_mode=" + process_mode+ "&table_name=" + table_name,
-            url: "/board/board_ajax.php",
+            url: "/page/board/board_ajax.php",
             dataType: "json",
             cache: false,
             async: false,
@@ -229,7 +229,7 @@
                     $(".div_comment_textarea").show();
                 }
 
-                if (!isAdmin) {
+                if (isAdmin == 'N') {
                     $(".div_comment_textarea").hide();
                 }
 
@@ -243,7 +243,7 @@
         if (type == 's') {
             if (!userName) {
                 if (!getCookie('view_status') || getCookie('view_status') != idx){
-                    window.location.href = `/board/board_password.php?table_name=${table_name}&idx=${idx}&type=v`;
+                    window.location.href = `/page/board/board_password.php?table_name=${table_name}&idx=${idx}&type=v`;
                     return false;
                 }
             }

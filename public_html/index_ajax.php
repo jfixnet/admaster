@@ -20,7 +20,7 @@ if ($process_mode == "visitor_count") {
     $sql = "
                     SELECT *
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -40,12 +40,16 @@ if ($process_mode == "visitor_count") {
     }
 
     $referrer = $_REQUEST['referrer'];
+    if (!$referrer) {
+        $referrer = '/';
+    }
+
     $agent = getBrowserInfo();
     $os = getOsInfo();
     $device = getDeviceInfo();
 
     $sql = "
-                    INSERT INTO visitor_count
+                    INSERT INTO jf_visitor_count
                     
                     SET 
                         ip = '${ip}',

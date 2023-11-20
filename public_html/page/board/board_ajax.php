@@ -1,5 +1,7 @@
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/include/default.php"; ?>
 
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . "/include/auth.php"; ?>
+
 <?php
 
 // 변수
@@ -75,7 +77,7 @@ if ($process_mode == "list") {
     $sql = "
                     SELECT a.*, 
                            (select count(*) from ${table_name}) as total_count, 
-                           (select count(*) from comment where table_name = '${table_name}' and fk_table_idx = a.idx  ) as comment_count
+                           (select count(*) from jf_comment where table_name = '${table_name}' and fk_table_idx = a.idx  ) as comment_count
                     
                     FROM ${table_name} as a
                     
@@ -287,7 +289,7 @@ else if ($process_mode == 'view') {
     // 첨부파일 표시
     $sql = "
                     SELECT *
-                    FROM attach_file
+                    FROM jf_attach_file
                     WHERE
                                 fk_table = '${table_name}'
                                 AND fk_idx = '${idx}'
@@ -396,7 +398,7 @@ else if ($process_mode == "page_setting") {
     $sql = "
                     SELECT *
                     
-                    FROM board_management 
+                    FROM jf_board_management 
                     
                     WHERE
                         table_name = '${table_name}'
@@ -406,7 +408,26 @@ else if ($process_mode == "page_setting") {
 
     $table_setting_data = $db->query($sql)->fetchArray();
 
-    echo json_encode($table_setting_data);
+    if (!$table_setting_data) {
+        $data = array(
+            "status" => false,
+            "data" => '',
+            "message" => '게시판이 없습니다. 관리자에게 문의해주세요.',
+            "redirect" => "/",
+        );
+
+        echo json_encode($data);
+        exit;
+    }
+
+    $data = array(
+        "status" => true,
+        "data" => $table_setting_data,
+        "message" => '',
+        "redirect" => "",
+    );
+
+    echo json_encode($data);
 }
 
 else if ($process_mode == "comment_create") {
@@ -422,7 +443,7 @@ else if ($process_mode == "comment_create") {
     if (!$user_name) {
         $sql = "
                     SELECT *
-                    FROM users
+                    FROM jf_users
                     WHERE code = '${_SESSION['user_code']}'
         ";
         $result = $db->query($sql)->fetchArray();
@@ -431,7 +452,7 @@ else if ($process_mode == "comment_create") {
     }
 
     $sql = "
-                    INSERT INTO comment
+                    INSERT INTO jf_comment
                     
                     SET 
                         table_name = '${table_name}',
@@ -498,7 +519,7 @@ else if ($process_mode == "comment_delete") {
     $idx = sanitize($_REQUEST['idx']);
 
     $sql = "
-                    DELETE FROM comment
+                    DELETE FROM jf_comment
                     WHERE 
                             idx = '${idx}'
                     LIMIT 1

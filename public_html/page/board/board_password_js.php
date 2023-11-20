@@ -28,7 +28,7 @@
                 idx : idx,
                 write_password: write_password,
             },
-            url: "/board/board_ajax.php",
+            url: "/page/board/board_ajax.php",
             dataType: "json",
             cache: false,
             async: false,
@@ -37,7 +37,7 @@
 
                 if (type == 's') {
                     setCookie('view_status', idx, 1);
-                    window.location.href = `/board/board_view.php?table_name=${table_name}&idx=${idx}`;
+                    window.location.href = `/page/board/board_view.php?table_name=${table_name}&idx=${idx}`;
                     return false;
                 } else if (type == 'd'){
                     deleteBoard();
@@ -45,7 +45,7 @@
                 }
 
                 setCookie('update_status', idx, 1);
-                window.location.href = `/board/board_update.php?table_name=${table_name}&idx=${idx}`;
+                window.location.href = `/page/board/board_update.php?table_name=${table_name}&idx=${idx}`;
             } else {
                 toastr["error"](result.message);
             }
@@ -56,13 +56,13 @@
         $.ajax({
             type: "post",
             data: $("#form").serialize() + "&process_mode=delete"+ "&table_name=" + table_name+ "&idx=" + idx,
-            url: "/board/board_ajax.php",
+            url: "/page/board/board_ajax.php",
             dataType: "json",
             cache: false,
             async: false,
         }).done(function(data) {
             if (data.status) {
-                window.location.href="/board/board.php?table_name="+table_name;
+                window.location.href="/page/board/board.php?table_name="+table_name;
             } else {
                 toastr["error"](data.message);
             }

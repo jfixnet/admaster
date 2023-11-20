@@ -10,7 +10,7 @@ if ($process_mode == "list") {
     $sql = "
                     SELECT *
                     
-                    FROM board_management
+                    FROM jf_board_management
                     
                     WHERE
                         1 = 1
@@ -37,7 +37,7 @@ exit;
     $sql = "
                     SELECT *
                     
-                    FROM board_management
+                    FROM jf_board_management
                     
                     WHERE
                         1 = 1
@@ -80,7 +80,7 @@ exit;
     $board_create = $db->query($sql)->affectedRows();
 
     $sql = "
-                    INSERT INTO board_management
+                    INSERT INTO jf_board_management
                     SET
                             table_name = '${table_name}',
                             table_title = '${table_title}',
@@ -118,7 +118,7 @@ else if ($process_mode == 'update') {
     $comment_mode = sanitize($_REQUEST['comment_mode']);
 
     $sql = "
-                    UPDATE board_management
+                    UPDATE jf_board_management
                     SET
                             table_title = '${table_title}',
                             secret_mode = '${secret_mode}',
@@ -153,7 +153,7 @@ else if ($process_mode == 'update') {
     $sql = "
                     SELECT *
                     
-                    FROM board_management
+                    FROM jf_board_management
                     
                     WHERE
                         1 = 1

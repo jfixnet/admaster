@@ -43,7 +43,7 @@ if ($process_mode == "list") {
     $sql = "
                     SELECT count(*) as count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -57,7 +57,7 @@ if ($process_mode == "list") {
     $sql = "
                     SELECT count(*) as count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -73,7 +73,7 @@ if ($process_mode == "list") {
     $sql = "
                     SELECT *
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -113,7 +113,7 @@ else if ($process_mode == "list2") {
     $sql = "
                     SELECT count(*) as total_count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -128,7 +128,7 @@ else if ($process_mode == "list2") {
     $sql = "
                     SELECT *, count(*) as count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -168,7 +168,7 @@ else if ($process_mode == "list3") {
     $sql = "
                     SELECT count(*) as total_count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -183,7 +183,7 @@ else if ($process_mode == "list3") {
     $sql = "
                     SELECT *, count(*) as count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -223,7 +223,7 @@ else if ($process_mode == "list4") {
     $sql = "
                     SELECT count(*) as total_count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -238,7 +238,7 @@ else if ($process_mode == "list4") {
     $sql = "
                     SELECT *, count(*) as count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -278,7 +278,7 @@ else if ($process_mode == "list5") {
     $sql = "
                     SELECT count(*) as total_count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -293,7 +293,7 @@ else if ($process_mode == "list5") {
     $sql = "
                     SELECT *, count(*) as count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -333,7 +333,7 @@ else if ($process_mode == "list6") {
     $sql = "
                     SELECT count(*) as total_count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -375,7 +375,7 @@ else if ($process_mode == "list6") {
     $sql = "
                     SELECT DATE_FORMAT(create_date, '%H:00') AS hour, count(*) as count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -421,7 +421,7 @@ else if ($process_mode == "list7") {
     $sql = "
                     SELECT count(*) as total_count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -446,7 +446,7 @@ else if ($process_mode == "list7") {
     $sql = "
                     SELECT DATE_FORMAT(create_date, '%a') AS day, count(*) as count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -492,7 +492,7 @@ else if ($process_mode == "list8") {
     $sql = "
                     SELECT count(*) as total_count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -509,7 +509,7 @@ else if ($process_mode == "list8") {
     $sql = "
                     SELECT DATE_FORMAT(create_date, '%Y-%m-%d') AS day, count(*) as count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -554,7 +554,7 @@ else if ($process_mode == "list9") {
     $sql = "
                     SELECT count(*) as total_count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -571,7 +571,7 @@ else if ($process_mode == "list9") {
     $sql = "
                     SELECT DATE_FORMAT(create_date, '%Y-%m') AS day, count(*) as count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -616,7 +616,7 @@ else if ($process_mode == "list10") {
     $sql = "
                     SELECT count(*) as total_count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1
@@ -633,7 +633,7 @@ else if ($process_mode == "list10") {
     $sql = "
                     SELECT DATE_FORMAT(create_date, '%Y') AS day, count(*) as count
                     
-                    FROM visitor_count
+                    FROM jf_visitor_count
                     
                     WHERE
                         1 = 1

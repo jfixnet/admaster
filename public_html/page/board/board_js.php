@@ -28,7 +28,7 @@
                     srch_key : srch_key,
                     srch_keyword : srch_keyword,
                 },
-                url: "/board/board_ajax.php",
+                url: "/page/board/board_ajax.php",
                 dataType: "json",
             },
             processing: true,
@@ -50,10 +50,10 @@
                             comment_icon = `&nbsp<span style="color: red; font-weight: bold;">[${row.comment_count}]</span>`;
                         }
 
-                        let href = `board_view.php?table_name=${table_name}&idx=${row.idx}&type=v`;
+                        let href = `/page/board/board_view.php?table_name=${table_name}&idx=${row.idx}&type=v`;
                         if (row.is_secret == 'Y') {
-                            if (!isAdmin) {
-                                href = `/board/board_password.php?table_name=${table_name}&idx=${row.idx}&type=s`;
+                            if (isAdmin != 'Y') {
+                                href = `/page/board/board_password.php?table_name=${table_name}&idx=${row.idx}&type=s`;
                             }
                         }
                         let html = `<a class="article" href="${href}">${data} ${secret_icon} ${comment_icon}</a>`;
@@ -79,27 +79,25 @@
         $.ajax({
             type: "post",
             data: $("#form").serialize() + "&process_mode=" + process_mode+ "&table_name=" + table_name,
-            url: "/board/board_ajax.php",
+            url: "/page/board/board_ajax.php",
             dataType: "json",
             cache: false,
             async: false,
         }).done(function(result) {
-            if (result) {
-                console.log(result);
-                $("#page_title").text(result.table_title);
-
-                if (result.admin_only == 'N' || isAdmin) {
+            if (result.status) {
+                $("#page_title").text(result.data.table_title);
+                if (result.data.admin_only == 'N' || isAdmin) {
                     $(".write_setting").show();
                 }
-
             } else {
-                console.log('페이지 세팅 오류');
+                toastr["error"](result.message);
+                document.location.href = result.redirect;
             }
         });
     }
 
     $("#board_write").click(function() {
-        window.location.href = "/board/board_write.php?table_name="+table_name;
+        window.location.href = "/page/board/board_write.php?table_name="+table_name;
     });
 
     $(function() {

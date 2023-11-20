@@ -23,7 +23,7 @@
             columns: [
                 { data: "table_name", className: "text-center" ,
                     render: function(data, type, row, meta) {
-                        let html = `<a class="article" href="/board/board.php?table_name=${data}" target='_blank'>${data}</a>`;
+                        let html = `<a class="article" href="/page/board/board.php?table_name=${data}" target='_blank'>${data}</a>`;
                         return html;
                     }
                 },

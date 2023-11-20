@@ -5,6 +5,8 @@
 <div class="wrapper wrapper-content" style="margin-top: 200px;">
     <div class="container text-center" style="width: 450px;">
 
+        <h1>관리자 페이지</h1>
+
         <div class="form-group" style="margin-bottom: 15px;">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user" style="font-size:20px; width: 25px;"></i></span>

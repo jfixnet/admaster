@@ -270,7 +270,7 @@ function fileUpload($table, $idx, $type, $file, $sort) {
     }
 
     $sql = "
-		            INSERT INTO attach_file
+		            INSERT INTO jf_attach_file
 		            SET
 		                    fk_table = '${table}',
 		                    fk_idx = '${idx}',
@@ -292,7 +292,7 @@ function fileUpload($table, $idx, $type, $file, $sort) {
         // 과거 데이터 검색
         $sql = "
 			            SELECT *
-			            FROM attach_file
+			            FROM jf_attach_file
 			            WHERE
 				                    fk_table = '${table}'
 				                    AND fk_idx = '${idx}'
@@ -305,7 +305,7 @@ function fileUpload($table, $idx, $type, $file, $sort) {
 
             // 과거 데이터 삭제
             $sql = "
-				            DELETE FROM attach_file
+				            DELETE FROM jf_attach_file
 				            WHERE idx = '${item['idx']}'
 				            LIMIT 1
 		    ";
@@ -315,6 +315,10 @@ function fileUpload($table, $idx, $type, $file, $sort) {
             @unlink($upload_root . "/" . $item['file_tmp_name']);
         }
     }
+
+    $result = [
+        "tmp_name" =>  $file_tmp_name
+    ];
 
     return $result;
 }
@@ -327,7 +331,7 @@ function fileRemove($table, $idx) {
     // 과거 데이터 검색
     $sql = "
 		            SELECT *
-		            FROM attach_file
+		            FROM jf_attach_file
 		            WHERE
 			                    fk_table = '${table}'
 			                    AND fk_idx = '${idx}'
@@ -337,7 +341,7 @@ function fileRemove($table, $idx) {
 
         // 과거 데이터 삭제
         $sql = "
-			            DELETE FROM attach_file
+			            DELETE FROM jf_attach_file
 			            WHERE idx = '${item['idx']}'
 			            LIMIT 1
 	    ";
@@ -357,7 +361,7 @@ function fileRemoveWithCode($code) {
 
     // 데이터 삭제
     $sql = "
-		            DELETE FROM attach_file
+		            DELETE FROM jf_attach_file
 		            WHERE file_tmp_name = '${code}'
 		            LIMIT 1
 	";

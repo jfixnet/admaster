@@ -1,5 +1,7 @@
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/include/default.php"; ?>
 
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . "/include/auth.php"; ?>
+
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/layout/header.php"; ?>
 
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/layout/nav_top.php"; ?>
@@ -34,5 +36,5 @@
 <!--    <input type="hidden" id="form_table_name" name="form_table_name">-->
 <!--</form>-->
 
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . "/board/board_password_js.php"; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . "page/board/board_password_js.php"; ?>
 
