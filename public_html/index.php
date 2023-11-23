@@ -23,6 +23,4 @@
 
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/index_js.php"; ?>
 
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . "/layout/copyright.php"; ?>
-
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/layout/footer.php"; ?>
