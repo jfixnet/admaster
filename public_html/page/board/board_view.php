@@ -80,3 +80,5 @@
 
 </div>
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/page/board/board_view_js.php"; ?>
+
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . "/layout/footer.php"; ?>
