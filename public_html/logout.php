@@ -1,4 +1,4 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . "/include/default.php"; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . "/include/config.php"; ?>
 
 <?php
 //세션 유지

@@ -8655,3 +8655,8 @@ body.md-skin {
   background-repeat: no-repeat !important;
   background-position: right top !important;
 }
+
+/*ckeditor 높이*/
+.ck-editor__editable_inline {
+  min-height: 300px;
+}

@@ -31,8 +31,8 @@
 
     <!-- Custom Basic -->
     <!--todo : ?????????????????-->
-    <link href="/asset/css/style.css" rel="stylesheet">
-    <script defer src="/asset/js/basic.js"></script>
+    <link href="http://ns2.jfix.net/~hanilam/asset/css/style.css" rel="stylesheet">
+    <script defer src="http://ns2.jfix.net/~hanilam/asset/js/basic.js"></script>
 
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css">

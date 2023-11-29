@@ -1,4 +1,4 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . "/include/default.php"; ?>
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . "/include/config.php"; ?>
 
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/include/auth.php"; ?>
 
@@ -6,6 +6,7 @@
 
 <?php include_once $_SERVER['DOCUMENT_ROOT'] . "/layout/nav_top.php"; ?>
 
+<?php var_dump($_SERVER['DOCUMENT_ROOT']);?>
 
 <div class="wrapper wrapper-content">
     <div class="container">
