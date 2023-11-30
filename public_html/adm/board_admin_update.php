@@ -43,6 +43,13 @@
                 <option value='Y'>Y</option>
             </select>
         </div>
+        <div class="col-sm-3">
+            <label class="col-sm-3 form-label"><span class="text-danger"></span> 게시판 형식</label>
+            <select form="form" class='form-select' name="skin" id="skin">
+                <option value='list'>LIST</option>
+                <option value='gallery'>GALLERY</option>
+            </select>
+        </div>
     </div>
 
     <div class="row mb-3">

@@ -6,8 +6,6 @@
 
 <?php include "nav_top.php"; ?>
 
-<?php var_dump($_SERVER['DOCUMENT_ROOT']);?>
-
 <div class="wrapper wrapper-content">
     <div class="container">
 

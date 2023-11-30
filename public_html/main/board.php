@@ -59,7 +59,7 @@
             </div>
         </div>
 
-        </div>
+    </div>
 
     <form id="form_main" name="form_main">
         <input type="hidden" id="idx" name="idx">

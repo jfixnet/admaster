@@ -1,5 +1,7 @@
 <?php include "config.php"; ?>
 
+<?php include "../lib/auth.php"; ?>
+
 <?php
 
 // 변수
@@ -193,7 +195,7 @@ else if ($process_mode == "login") {
 
     } else {
 
-        $temp = array("status" => 0, "message" => "사원번호와 비밀번호를 확인하세요.", "redirect" => "",);
+        $temp = array("status" => 0, "message" => "dkdlel와 비밀번호를 확인하세요.", "redirect" => "",);
 
     }
     echo json_encode($temp);

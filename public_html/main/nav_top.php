@@ -13,7 +13,7 @@
                 </li>
 
                 <li class="nav-item m-r-sm">
-                    <a class="nav-link" href="board.php?table_name=freeboard">자유게시판</a>
+                    <a class="nav-link" href="board_g.php?table_name=freeboard">자유게시판</a>
                 </li>
 
                 <li class="nav-item m-r-sm">
@@ -37,8 +37,6 @@
                     </li>
 
                 <? } ?>
-
-
 
             </ul>
         </div>

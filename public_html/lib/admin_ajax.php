@@ -1,5 +1,7 @@
 <?php include "config.php"; ?>
 
+<?php include "../lib/admin_auth.php"; ?>
+
 <?php
 
 // 변수
@@ -107,6 +109,7 @@ else if ($process_mode == 'board_create') {
     $admin_only = sanitize($_REQUEST['admin_only']);
     $comment_mode = sanitize($_REQUEST['comment_mode']);
     $memo = sanitize($_REQUEST['memo']);
+    $skin = sanitize($_REQUEST['skin']);
 
     $sql = "
                     SELECT *
@@ -161,6 +164,7 @@ else if ($process_mode == 'board_create') {
                             secret_mode = '${secret_mode}',
                             admin_only = '${admin_only}',
                             comment_mode = '${comment_mode}',
+                            skin = '${skin}',
                             memo = '${memo}'
     ";
 
@@ -190,6 +194,7 @@ else if ($process_mode == 'board_update') {
     $secret_mode = sanitize($_REQUEST['secret_mode']);
     $admin_only = sanitize($_REQUEST['admin_only']);
     $comment_mode = sanitize($_REQUEST['comment_mode']);
+    $skin = sanitize($_REQUEST['skin']);
 
     $sql = "
                     UPDATE jf_board_management
@@ -198,6 +203,7 @@ else if ($process_mode == 'board_update') {
                             secret_mode = '${secret_mode}',
                             admin_only = '${admin_only}',
                             comment_mode = '${comment_mode}',
+                            skin = '${skin}',
                             memo = '${memo}'
                     WHERE table_name = '${table_name}'
                     LIMIT 1
@@ -913,4 +919,96 @@ else if ($process_mode == "stat_list10") {
     $result = $list;
 
     echo json_encode($result);
+}
+
+else if ($process_mode == 'board_setting_view') {
+
+    $sql = "
+                    SELECT contents
+                    
+                    FROM jf_board_setting
+                    
+                    WHERE type = 'extension'
+                                        
+                    ORDER BY idx desc
+    ";
+
+    $extension_data = $db->query($sql)->fetchArray();
+
+    $result['data']['extension'] = $extension_data['contents']; // 리턴값 초기화
+
+    $sql = "
+                    SELECT contents
+                    
+                    FROM jf_board_setting
+                    
+                    WHERE type = 'filtering'
+                                        
+                    ORDER BY idx desc
+    ";
+
+    $filtering_data = $db->query($sql)->fetchArray();
+
+    $result['data']['filtering'] = $filtering_data['contents']; // 리턴값 초기화
+
+    echo json_encode($result);
+}
+
+else if ($process_mode == 'board_setting_update') {
+
+    $extension = $_REQUEST['extension'];
+    $filtering = $_REQUEST['filtering'];
+
+    $sql = "
+                    DELETE FROM jf_board_setting
+                    WHERE type = 'extension' 
+                    LIMIT 1
+    ";
+
+    $result = $db->query($sql)->affectedRows();
+
+    $sql = "
+					INSERT INTO jf_board_setting
+					SET 
+					    type = 'extension',
+					    contents = '${extension}'
+					
+					
+		";
+    $result = $db->query($sql);
+
+
+    $sql = "
+                    DELETE FROM jf_board_setting
+                    WHERE type = 'filtering' 
+                    LIMIT 1
+    ";
+
+    $result = $db->query($sql)->affectedRows();
+
+    $sql = "
+					INSERT INTO jf_board_setting
+					SET 
+					    type = 'filtering',
+					    contents = '${filtering}'
+					
+					
+		";
+    $result = $db->query($sql);
+
+
+    // 분기
+    if ($result != -1) {
+        $temp = array(
+            "status" => 1,
+            "message" => "저장 되었습니다.",
+        );
+    } else {
+        $temp = array(
+            "status" => 0,
+            "message" => "저장 오류",
+        );
+    }
+
+    echo json_encode($temp);
 }

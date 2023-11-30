@@ -111,6 +111,101 @@ if ($process_mode == "list") {
     echo json_encode($data);
 }
 
+else if ($process_mode == "gallery_list") {
+    global $upload_url;
+    $table_name = sanitize($_REQUEST['table_name']);
+
+    $per_page = 12;
+    $page = $_REQUEST["page"];
+    $page = ($page == "" ? 1 : $page);
+    $from_record = ($page - 1) * $per_page;
+
+    // 총 개수
+    $sql = "
+                    SELECT *
+                    
+                    FROM ${table_name}
+                    
+                    WHERE
+                        1 = 1
+                    
+                    ORDER BY idx
+    ";
+
+    $total_count = $db->query($sql)->numRows();
+    $total_page  = @ceil($total_count / $per_page);
+    $counter = $list_cnt = $total_count - (($page - 1) * $per_page);
+
+    $result['paging']['total_count'] = $total_count;
+    $result['paging']['total_page'] = $total_page;
+    $result['paging']['from_record'] = $from_record;
+    $result['paging']['counter'] = $counter;
+
+
+    // 검색 조건 총 개수
+    $sql = "
+                    SELECT count(*) as count
+                    
+                    FROM ${table_name} as a
+                    
+                    WHERE
+                        1 = 1
+                    
+                    ORDER BY a.idx
+    ";
+
+    $filter_count = $db->query($sql)->fetchArray();
+
+    // 데이터 쿼리
+    $sql = "
+                    SELECT a.*, 
+                           (select count(*) from ${table_name}) as total_count, 
+                           (select count(*) from jf_comment where table_name = '${table_name}' and fk_table_idx = a.idx  ) as comment_count
+                    
+                    FROM ${table_name} as a
+                    
+                    WHERE
+                        1 = 1
+                    
+                    ORDER BY idx
+                    
+                    LIMIT ${from_record}, ${per_page}
+    ";
+
+    $result['data'] = $db->query($sql)->fetchAll();
+
+    $list = [];
+    $no = 0;
+    foreach ($result['data'] as $item) {
+        $sql = "
+                    SELECT *
+                    
+                    FROM jf_attach_file
+                    
+                    WHERE
+                        fk_table = '${table_name}' 
+                    AND fk_idx = '${item['idx']}'
+                    
+                    ORDER BY idx
+        ";
+
+        $attach_file_data = $db->query($sql)->fetchArray();
+
+        $item['attach_file'] = '';
+        $item['attach_file_url'] = '';
+        if ($attach_file_data) {
+            $item['attach_file'] = $attach_file_data;
+            $item['attach_file_url'] = "../data/".$attach_file_data['file_tmp_name'].'.'.$attach_file_data['file_extension'];
+        }
+
+        $list[] = $item;
+    }
+
+    $result['data'] = $list;
+
+    echo json_encode($result);
+}
+
 else if ($process_mode == 'create') {
 
     $table_name = sanitize($_REQUEST['form_table_name']);
@@ -128,6 +223,31 @@ else if ($process_mode == 'create') {
     $is_secret = 'N';
     if ($is_secret_val == 'on') {
         $is_secret = 'Y';
+    }
+
+    $sql = "
+                    SELECT contents
+                    
+                    FROM jf_board_setting
+                    
+                    WHERE
+                            type = 'filtering'
+    ";
+
+    $blacklist_data = $db->query($sql)->fetchArray();
+
+    $blacklist = explode(",", $blacklist_data['contents']);
+    foreach ($blacklist as $word) {
+        if (stripos($content, $word) !== false) {
+            $temp = array(
+                "status" => 0,
+                "message" => "비속어가 포함되어있습니다.",
+            );
+            echo json_encode($temp);
+            exit;
+
+            //$content = str_ireplace($word, "****", $content);
+        }
     }
 
     $sql = "
@@ -219,6 +339,14 @@ else if ($process_mode == 'update') {
             $result_temp = fileUpload($table_name, $idx, "file", $_FILES['file'], $i);
             if ($result_temp['status'] == "error") { // 업로드 오류
                 $message_add =  " [주의 : " . $result_temp['message'] . "]";
+
+                $temp = array(
+                    "status" => 0,
+                    "message" => "파일 저장 오류",
+                );
+
+                echo json_encode($temp);
+                exit;
             }
         }
     }
@@ -488,7 +616,7 @@ else if ($process_mode == "comment_list") {
 
     $sql = "
                     SELECT *
-                    FROM comment
+                    FROM jf_comment
                     WHERE 
                             table_name = '${table_name}'
                     AND fk_table_idx = '${idx}'

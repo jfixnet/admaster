@@ -1,0 +1,33 @@
+.paging-wrap li{list-style: none;display: inline-block; }
+.paging-wrap a{color: inherit; text-decoration: none;}
+
+.paging-wrap{
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+.paging-wrap li a{
+    display: block;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    color:#848684;
+}
+.paging-wrap .pre{
+    background-color: #fff;
+    border-radius: 4px 0 0 4px;
+}
+.paging-wrap .next  {
+    background-color: #fff;
+    border-radius: 0 4px 4px 0;
+}
+/*.paging-wrap li a:active {*/
+/*	background-color:#f4f4f4;*/
+/*	color:#6c6c6c;*/
+/*	border:1px solid #ddd;*/
+/*}*/
+
+.paging-active {
+    background-color:#f4f4f4;
+    color:#6c6c6c;
+    border:1px solid #ddd;
+}

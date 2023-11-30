@@ -27,8 +27,14 @@ $dbpasswd = 'wpdlvlrtm12!';
 $dbname = 'hanilam';
 $db = new Database($dbhost, $dbuser, $dbpasswd, $dbname);
 
+if(isHttpd()){
+    $protocol = "https";
+}else{
+    $protocol = "http";
+}
 // Upload
-$upload_root = "../data"; // Root Folder
+$upload_root = __DIR__."/../data"; // Root Folder
+//$upload_url       = $protocol."://".$_SERVER['HTTP_HOST'] . "/data"; // Root Folder
 $upload_file_size = 30; // 메가
 
 ?>

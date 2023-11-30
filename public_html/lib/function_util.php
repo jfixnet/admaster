@@ -220,16 +220,20 @@ function fileUpload($table, $idx, $type, $file, $sort) {
     global $upload_root; // 업로드 폴더
     global $upload_file_size; // 업로드 제한 용량
 
-    // 허용 확장자
-    switch ($type) {
-        case "image" :
-            $allow_extension = array('jpg', 'jpeg', 'png', 'gif'); // 허용 확장자
-            break;
+    //업로드 허용 확장자
+    $sql = "
+                    SELECT contents
+                    
+                    FROM jf_board_setting
+                    
+                    WHERE
+                            type = 'extension'
+    ";
 
-        case "file" :
-        default :
-            $allow_extension = array('jpg', 'jpeg', 'png', 'gif', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'hwp', 'zip'); // 허용 확장자
-            break;
+    $extension_data = $db->query($sql)->fetchArray();
+    $allow_extension = explode("|", $extension_data['contents']);
+    if (!$extension_data) {
+        $allow_extension = array('jpg', 'jpeg', 'png', 'gif', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'hwp', 'zip');
     }
 
     // 파일 업로드 관련 변수
@@ -371,4 +375,10 @@ function fileRemoveWithCode($code) {
     @unlink($upload_root . "/" . $code);
 
     return $result;
+}
+
+function isHttpd() {
+    return
+        (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || $_SERVER['SERVER_PORT'] == 443;
 }

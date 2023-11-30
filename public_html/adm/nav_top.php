@@ -9,6 +9,9 @@
             <div class="collapse navbar-collapse m-t-md" id="navbarNavDropdown" style="">
                 <ul class="nav justify-content-center">
                     <li class="nav-item m-r-sm">
+                        <a class="nav-link" href="board_setting.php">환경설정</a>
+                    </li>
+                    <li class="nav-item m-r-sm">
                         <a class="nav-link" href="board_admin.php">게시판관리</a>
                     </li>
                     <li class="nav-item m-r-sm">
