@@ -1,3 +1,5 @@
 .idea/
 .vscode/
 img/
+lib/config.php
+lib/Database.php
