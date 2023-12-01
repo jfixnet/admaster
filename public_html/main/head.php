@@ -66,9 +66,12 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/4.0.0/js/jasny-bootstrap.min.js"></script>
 
+    <!--smarteditor-->
+    <script src="../lib/smarteditor/dist/js/service/HuskyEZCreator.js"></script>
+
     <!-- ck editor -->
-    <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/translations/ko.js"></script>
+    <!--<script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>-->
+    <!--<script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/translations/ko.js"></script>-->
     <!--<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>-->
     <!--<script src="https://cdn.ckeditor.com/4.22.1/standard/lang/ko.js"></script>-->
 

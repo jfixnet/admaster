@@ -43,7 +43,7 @@
         <div class="row mb-3">
             <div class="col-sm-12">
                 <!--<label class="col-sm-2 form-label"><span class="text-danger"></span> 내용</label>-->
-                <textarea form="form" id="content" name="content" class=""></textarea>
+                <textarea form="form" id="content" name="content" class="" style="width:100%;"></textarea>
             </div>
         </div>
 
@@ -119,8 +119,8 @@
             formData.append("process_mode", process_mode);
             formData.append("user_name", user_name);
 
-            const editorData = editor.getData();
-            formData.append("content", editorData);
+            // const editorData = editor.getData();
+            // formData.append("content", editorData);
 
             $.ajax({
                 type: "post",
@@ -159,7 +159,7 @@
             let html = '';
 
             if ($(".file_row").length >= attachFileNum) {
-                toastr["error"]("첨부파일은 "+ attachFileNum + "개 이하로 등록 가능합니다.");
+                toastr["error"]("첨부파일은 총" + attachFileNum + "개까지 첨부가 가능합니다.");
                 return false;
             }
 
@@ -245,41 +245,52 @@
             });
         }
 
+        var oEditors = [];
 
-        ClassicEditor
-            .create( document.querySelector( '#content' ),{
-                language: "ko",
-                toolbar: {
-                    items: [
-                        'heading',
-                        '|',
-                        'bold',
-                        'italic',
-                        '|',
-                        'bulletedList',
-                        'numberedList',
-                        '|',
-                        // 'imageUpload',
-                        'blockQuote',
-                        '|',
-                        'undo',
-                        'redo'
-                    ]
-                },
-                simpleUpload: {
-                    uploadUrl: '/your_upload_endpoint', // 이미지 업로드를 처리할 서버 측 엔드포인트 URL
-                }
-            } )
-            .then( newEditor => {
-                editor = newEditor;
-            } )
-            .catch( error => {
-                console.error( error );
-            } );
+    function smartEditor(){
+        nhn.husky.EZCreator.createInIFrame({
+            oAppRef: oEditors,
+            elPlaceHolder: "content",
+            sSkinURI: "../lib/smarteditor/dist/SmartEditor2Skin.html",
+            fCreator: "createSEditor2"
+        });
+    }
+
+        // ClassicEditor
+        //     .create( document.querySelector( '#content' ),{
+        //         language: "ko",
+        //         toolbar: {
+        //             items: [
+        //                 'heading',
+        //                 '|',
+        //                 'bold',
+        //                 'italic',
+        //                 '|',
+        //                 'bulletedList',
+        //                 'numberedList',
+        //                 '|',
+        //                 // 'imageUpload',
+        //                 'blockQuote',
+        //                 '|',
+        //                 'undo',
+        //                 'redo'
+        //             ]
+        //         },
+        //         simpleUpload: {
+        //             uploadUrl: '/your_upload_endpoint', // 이미지 업로드를 처리할 서버 측 엔드포인트 URL
+        //         }
+        //     } )
+        //     .then( newEditor => {
+        //         editor = newEditor;
+        //     } )
+        //     .catch( error => {
+        //         console.error( error );
+        //     } );
 
         $(function() {
             pageSetting();
             fileUploadAdd(0);
+            smartEditor();
         });
 
     </script>

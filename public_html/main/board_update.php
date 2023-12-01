@@ -204,7 +204,7 @@
         let html = '';
 
         if ($(".file_row").length >= attachFileNum) {
-            toastr["error"]("첨부파일은 " + attachFileNum + "개 이하로 등록 가능합니다.");
+            toastr["error"]("첨부파일은 총" + attachFileNum + "개까지 첨부가 가능합니다.");
             return false;
         }
 
