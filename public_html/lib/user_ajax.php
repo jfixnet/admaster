@@ -67,7 +67,6 @@ if ($process_mode == "visitor_count") {
 }
 
 else if ($process_mode == "join") {
-
     // 변수 정리
     $code = sanitize($_REQUEST['code']);
     $password = sanitize($_REQUEST['password']);
@@ -95,6 +94,7 @@ else if ($process_mode == "join") {
     $name = sanitize($_REQUEST['name']);
     $phone = sanitize($_REQUEST['phone']);
     $email = sanitize($_REQUEST['email']);
+    $address = sanitize($_REQUEST['address']);
     $reception_status_check = sanitize($_REQUEST['reception_status_check']);
     $password = enc($password);
 
@@ -111,6 +111,7 @@ else if ($process_mode == "join") {
 					name ='${name}',
 					phone ='${phone}',
 					email ='${email}',
+					address ='${address}',
 					status ='Y',
 					reception_status = '${reception_status}'
 	";
@@ -125,6 +126,54 @@ else if ($process_mode == "join") {
     );
 
     echo json_encode($temp);
+}
+
+else if ($process_mode == 'join_setting') {
+
+    $sql = "
+                    SELECT contents
+                    
+                    FROM jf_board_setting
+                    
+                    WHERE type = 'phone_check'
+                                        
+                    ORDER BY idx desc
+    ";
+
+    $filtering_data = $db->query($sql)->fetchArray();
+
+    $result['data']['phone_check'] = $filtering_data['contents']; // 리턴값 초기화
+
+    $sql = "
+                    SELECT contents
+                    
+                    FROM jf_board_setting
+                    
+                    WHERE type = 'email_check'
+                                        
+                    ORDER BY idx desc
+    ";
+
+    $filtering_data = $db->query($sql)->fetchArray();
+
+    $result['data']['email_check'] = $filtering_data['contents']; // 리턴값 초기화
+
+    $sql = "
+                    SELECT contents
+                    
+                    FROM jf_board_setting
+                    
+                    WHERE type = 'address_check'
+                                        
+                    ORDER BY idx desc
+    ";
+
+    $filtering_data = $db->query($sql)->fetchArray();
+
+    $result['data']['address_check'] = $filtering_data['contents']; // 리턴값 초기화
+
+    echo json_encode($result);
+    exit;
 }
 
 else if ($process_mode == 'code_check') {

@@ -390,6 +390,9 @@ function tableSorting(t){
     }
 }
 
-function excelDownload(table, columns, fileName) {
-    document.location.href = `/lib/excel_download.php?table=${table}&columns=${columns}&file_name=${fileName}`;
+function truncateString(str, maxLength) {
+    if (str.length > maxLength) {
+        return str.substring(0, maxLength) + '...'; // 특정 길이까지 잘라내고 말줄임 추가
+    }
+    return str;
 }

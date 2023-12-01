@@ -29,7 +29,7 @@
 
     <div class="row">
         <div class="col-xs-6 text-right">
-            <button type="button" class="btn btn-primary btn-sm" onclick="location.href='board_admin_write.php'">등록</button>
+            <button type="button" class="btn btn-success btn-sm" onclick="location.href='board_admin_write.php'">등록</button>
         </div>
     </div>
 

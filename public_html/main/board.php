@@ -26,7 +26,7 @@
                 <div class="input-group">
                     <input form="form_main" type="text" id="srch_keyword" name="srch_keyword" placeholder="검색어" class="form-control form-control-sm" autocomplete="off">
                     <span class="input-group-btn">
-                        <button form="form_main" type="button" class="btn btn-primary" id="search_btn"><i class="fa fa-search"></i></button>
+                        <button form="form_main" type="button" class="btn btn-success" id="search_btn"><i class="fa fa-search"></i></button>
                     </span>
                 </div>
             </div>
@@ -55,7 +55,7 @@
 
         <div class="row write_setting" style="display: none;">
             <div class="col-xs-6 text-right">
-                <button type="button" class="btn btn-primary btn-sm" id="board_write">글쓰기</button>
+                <button type="button" class="btn btn-success btn-sm" id="board_write">글쓰기</button>
             </div>
         </div>
 
@@ -109,6 +109,8 @@
                             return meta.settings._iRecordsTotal - meta.settings._iDisplayStart - meta.row;
                         }},
                     { data: "title", className: "text-left" ,  render: function(data, type, row, meta) {
+                            data = truncateString(data, 40);
+
                             let secret_icon = ``;
                             let comment_icon = ``;
                             if (row.is_secret == "Y") {
@@ -119,10 +121,8 @@
                             }
 
                             let href = `board_view.php?table_name=${table_name}&idx=${row.idx}&type=v`;
-                            if (row.is_secret == 'Y') {
-                                if (isAdmin != 'Y') {
-                                    href = `board_password.php?table_name=${table_name}&idx=${row.idx}&type=s`;
-                                }
+                            if (row.is_secret == 'Y' && isAdmin != 'Y') {
+                                href = `board_password.php?table_name=${table_name}&idx=${row.idx}&type=s`;
                             }
                             let html = `<a class="article" href="${href}">${data} ${secret_icon} ${comment_icon}</a>`;
 
@@ -153,7 +153,7 @@
             }).done(function(result) {
                 if (result.status) {
                     $("#page_title").text(result.data.table_title);
-                    if (result.data.admin_only == 'N' || isAdmin) {
+                    if (result.data.admin_only == 'N' || isAdmin == 'Y') {
                         $(".write_setting").show();
                     }
                 } else {
@@ -164,7 +164,7 @@
         }
 
         $("#board_write").click(function() {
-            window.location.href = "board_write.php?table_name="+table_name;
+            window.location.href = "board_write.php?table_name="+table_name+"&skin=list";
         });
 
         $(function() {

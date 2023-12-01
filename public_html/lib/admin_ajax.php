@@ -110,6 +110,7 @@ else if ($process_mode == 'board_create') {
     $comment_mode = sanitize($_REQUEST['comment_mode']);
     $memo = sanitize($_REQUEST['memo']);
     $skin = sanitize($_REQUEST['skin']);
+    $attach_file_num = sanitize($_REQUEST['attach_file_num']);
 
     $sql = "
                     SELECT *
@@ -165,6 +166,7 @@ else if ($process_mode == 'board_create') {
                             admin_only = '${admin_only}',
                             comment_mode = '${comment_mode}',
                             skin = '${skin}',
+                            attach_file_num = '${attach_file_num}',
                             memo = '${memo}'
     ";
 
@@ -195,6 +197,7 @@ else if ($process_mode == 'board_update') {
     $admin_only = sanitize($_REQUEST['admin_only']);
     $comment_mode = sanitize($_REQUEST['comment_mode']);
     $skin = sanitize($_REQUEST['skin']);
+    $attach_file_num = sanitize($_REQUEST['attach_file_num']);
 
     $sql = "
                     UPDATE jf_board_management
@@ -204,6 +207,7 @@ else if ($process_mode == 'board_update') {
                             admin_only = '${admin_only}',
                             comment_mode = '${comment_mode}',
                             skin = '${skin}',
+                            attach_file_num = '${attach_file_num}',
                             memo = '${memo}'
                     WHERE table_name = '${table_name}'
                     LIMIT 1
@@ -951,6 +955,48 @@ else if ($process_mode == 'board_setting_view') {
 
     $result['data']['filtering'] = $filtering_data['contents']; // 리턴값 초기화
 
+    $sql = "
+                    SELECT contents
+                    
+                    FROM jf_board_setting
+                    
+                    WHERE type = 'phone_check'
+                                        
+                    ORDER BY idx desc
+    ";
+
+    $filtering_data = $db->query($sql)->fetchArray();
+
+    $result['data']['phone_check'] = $filtering_data['contents']; // 리턴값 초기화
+
+    $sql = "
+                    SELECT contents
+                    
+                    FROM jf_board_setting
+                    
+                    WHERE type = 'email_check'
+                                        
+                    ORDER BY idx desc
+    ";
+
+    $filtering_data = $db->query($sql)->fetchArray();
+
+    $result['data']['email_check'] = $filtering_data['contents']; // 리턴값 초기화
+
+    $sql = "
+                    SELECT contents
+                    
+                    FROM jf_board_setting
+                    
+                    WHERE type = 'address_check'
+                                        
+                    ORDER BY idx desc
+    ";
+
+    $filtering_data = $db->query($sql)->fetchArray();
+
+    $result['data']['address_check'] = $filtering_data['contents']; // 리턴값 초기화
+
     echo json_encode($result);
 }
 
@@ -958,6 +1004,9 @@ else if ($process_mode == 'board_setting_update') {
 
     $extension = $_REQUEST['extension'];
     $filtering = $_REQUEST['filtering'];
+    $phone_check = $_REQUEST['phone_check'];
+    $email_check = $_REQUEST['email_check'];
+    $address_check = $_REQUEST['address_check'];
 
     $sql = "
                     DELETE FROM jf_board_setting
@@ -977,7 +1026,6 @@ else if ($process_mode == 'board_setting_update') {
 		";
     $result = $db->query($sql);
 
-
     $sql = "
                     DELETE FROM jf_board_setting
                     WHERE type = 'filtering' 
@@ -996,6 +1044,59 @@ else if ($process_mode == 'board_setting_update') {
 		";
     $result = $db->query($sql);
 
+    $sql = "
+                    DELETE FROM jf_board_setting
+                    WHERE type = 'phone_check' 
+                    LIMIT 1
+    ";
+
+    $result = $db->query($sql)->affectedRows();
+
+    $sql = "
+					INSERT INTO jf_board_setting
+					SET 
+					    type = 'phone_check',
+					    contents = '${phone_check}'
+					
+					
+		";
+    $result = $db->query($sql);
+
+    $sql = "
+                    DELETE FROM jf_board_setting
+                    WHERE type = 'email_check' 
+                    LIMIT 1
+    ";
+
+    $result = $db->query($sql)->affectedRows();
+
+    $sql = "
+					INSERT INTO jf_board_setting
+					SET 
+					    type = 'email_check',
+					    contents = '${email_check}'
+					
+					
+		";
+    $result = $db->query($sql);
+
+    $sql = "
+                    DELETE FROM jf_board_setting
+                    WHERE type = 'address_check' 
+                    LIMIT 1
+    ";
+
+    $result = $db->query($sql)->affectedRows();
+
+    $sql = "
+					INSERT INTO jf_board_setting
+					SET 
+					    type = 'address_check',
+					    contents = '${address_check}'
+					
+					
+		";
+    $result = $db->query($sql);
 
     // 분기
     if ($result != -1) {

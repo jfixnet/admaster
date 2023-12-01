@@ -13,8 +13,8 @@
             <span class="font-bold" style="font-size: 20px;" id="page_title"></span>
         </div>
         
-        <div class="row mb-3" id="login_check_div">
-            <div class="col-sm-6">
+        <div class="row mb-3">
+            <div class="col-sm-6" id="login_check_div">
                 <!--<label class="col-sm-2 form-label"><span class="text-danger">*</span> 이름</label>-->
                 <input form="form" type="text" id="user_name" name="user_name" class="form-control form-control-sm required" autocomplete="off" placeholder="이름">
             </div>
@@ -36,7 +36,7 @@
         <div class="row mb-3">
             <div class="col-sm-12">
                 <!--<label class="col-sm-2 form-label"><span class="text-danger">*</span> 제목</label>-->
-                <input form="form" type="text" id="title" name="title" class="form-control form-control-sm required" autocomplete="off" placeholder="제목을 입력해주세요." required>
+                <input form="form" type="text" id="title" name="title" class="form-control form-control-sm required" autocomplete="off" placeholder="제목을 입력해주세요." maxlength="50" required>
             </div>
         </div>
 
@@ -63,7 +63,7 @@
         <div class="row">
             <div class="col-sm-12 text-center">
                 <button form="form" type="button" class="btn btn-default btn-sm" id="return_list">취소</button>
-                <button form="form" type="submit" class="btn btn-primary btn-sm">등록</button>
+                <button form="form" type="submit" class="btn btn-success btn-sm">등록</button>
             </div>
         </div>
 
@@ -79,10 +79,10 @@
         let userName = '<?=$_SESSION['user_name']?>';
         let isAdmin = '<?=$_SESSION['is_admin']?>';
         let editor;
+        let attachFileNum;
 
         $("#login_check_div").show();
         if (userName) {
-            console.log(userName)
             $("#login_check_div").hide();
         }
 
@@ -95,6 +95,7 @@
 
         let table_name = getParameterByName('table_name');
         let idx = getParameterByName('idx');
+        let skin = getParameterByName('skin');
 
         // 모달 저장
         $("#form").on("submit", function(event) {
@@ -133,25 +134,32 @@
                 async: false,
             }).done(function(data) {
                 if (data.status) {
-                    window.location.href="board.php?table_name="+table_name;
+                    if (skin == 'gallery') {
+                        window.location.href="board_g.php?table_name="+table_name;
+                    } else {
+                        window.location.href="board.php?table_name="+table_name;
+                    }
+                    return false;
                 } else {
                     toastr["error"](data.message);
                 }
             });
         }
 
-
-
         $("#return_list").click(function() {
-            window.location.href = `board.php?table_name=${table_name}`;
+            if (skin == 'gallery') {
+                window.location.href = `board_g.php?table_name=${table_name}`;
+            } else {
+                window.location.href = `board.php?table_name=${table_name}`;
+            }
+            return false;
         });
-
 
         function fileUploadAdd(index) {
             let html = '';
 
-            if ($(".file_row").length >= 3) {
-                toastr["error"]("첨부파일은 3개 이하로 등록 가능합니다.");
+            if ($(".file_row").length >= attachFileNum) {
+                toastr["error"]("첨부파일은 "+ attachFileNum + "개 이하로 등록 가능합니다.");
                 return false;
             }
 
@@ -217,20 +225,20 @@
                 async: false,
             }).done(function(result) {
                 if (result) {
-                    console.log(result);
-                    $("#page_title").text(result.table_title);
+                    $("#page_title").text(result.data.table_title);
 
                     $("#secret_div").show();
-                    if (result.secret_mode == 'N') {
+                    if (result.data.secret_mode == 'N') {
                         $("#secret_div").hide();
                     }
 
                     $("#is_secret").prop("checked", false);
-                    if (result.secret_mode == 'A') {
+                    if (result.data.secret_mode == 'A') {
                         $("#is_secret").prop("checked", true);
                         $("#is_secret").prop("disabled", true);
                     }
 
+                    attachFileNum = result.data.attach_file_num;
                 } else {
                     console.log('페이지 세팅 오류');
                 }
@@ -251,7 +259,7 @@
                         'bulletedList',
                         'numberedList',
                         '|',
-                        'imageUpload',
+                        // 'imageUpload',
                         'blockQuote',
                         '|',
                         'undo',
@@ -270,7 +278,6 @@
             } );
 
         $(function() {
-
             pageSetting();
             fileUploadAdd(0);
         });

@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Custom Basic -->
-    <!--todo : ?????????????????-->
     <link href="css/style.css" rel="stylesheet">
     <script defer src="js/basic.js"></script>
 
@@ -70,6 +69,9 @@
     <!-- ck editor -->
     <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/translations/ko.js"></script>
+    <!--<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>-->
+    <!--<script src="https://cdn.ckeditor.com/4.22.1/standard/lang/ko.js"></script>-->
+
 
 </head>
 

@@ -6,6 +6,8 @@
 // 변수
 $process_mode = sanitize($_REQUEST['process_mode']);
 
+$img_extension = array('jpg', 'jpeg', 'png', 'gif');
+
 if ($process_mode == "list") {
     $table_name = sanitize($_REQUEST['table_name']);
     $srch_key = sanitize($_REQUEST['srch_key']);
@@ -129,7 +131,7 @@ else if ($process_mode == "gallery_list") {
                     WHERE
                         1 = 1
                     
-                    ORDER BY idx
+                    ORDER BY idx DESC
     ";
 
     $total_count = $db->query($sql)->numRows();
@@ -140,21 +142,6 @@ else if ($process_mode == "gallery_list") {
     $result['paging']['total_page'] = $total_page;
     $result['paging']['from_record'] = $from_record;
     $result['paging']['counter'] = $counter;
-
-
-    // 검색 조건 총 개수
-    $sql = "
-                    SELECT count(*) as count
-                    
-                    FROM ${table_name} as a
-                    
-                    WHERE
-                        1 = 1
-                    
-                    ORDER BY a.idx
-    ";
-
-    $filter_count = $db->query($sql)->fetchArray();
 
     // 데이터 쿼리
     $sql = "
@@ -167,7 +154,7 @@ else if ($process_mode == "gallery_list") {
                     WHERE
                         1 = 1
                     
-                    ORDER BY idx
+                    ORDER BY idx DESC
                     
                     LIMIT ${from_record}, ${per_page}
     ";
@@ -186,16 +173,20 @@ else if ($process_mode == "gallery_list") {
                         fk_table = '${table_name}' 
                     AND fk_idx = '${item['idx']}'
                     
-                    ORDER BY idx
+                    ORDER BY idx DESC
         ";
 
-        $attach_file_data = $db->query($sql)->fetchArray();
+        $attach_file_data = $db->query($sql)->fetchAll();
 
         $item['attach_file'] = '';
-        $item['attach_file_url'] = '';
+        $item['attach_file_url'] = 'img/noImage.jpg';
         if ($attach_file_data) {
-            $item['attach_file'] = $attach_file_data;
-            $item['attach_file_url'] = "../data/".$attach_file_data['file_tmp_name'].'.'.$attach_file_data['file_extension'];
+            foreach ($attach_file_data as $file) {
+                if (in_array($file['file_extension'], $img_extension)) {
+                    $item['attach_file'] = $attach_file_data;
+                    $item['attach_file_url'] = "../data/".$file['file_tmp_name'];
+                }
+            }
         }
 
         $list[] = $item;
@@ -268,11 +259,20 @@ else if ($process_mode == 'create') {
     // 첨부파일 처리
     for ($i = 0; $i < count($_FILES['file']['name']); $i++) {
         if ($_FILES['file']['name'][$i]) {
+
             $result_temp = fileUpload($table_name, $lastIDX, "file", $_FILES['file'], $i);
 
             if ($result_temp['status'] == "error") { // 업로드 오류
                 $message_add =  " [주의 : " . $result_temp['message'] . "]";
             }
+
+            $temp = array(
+                "status" => 0,
+                "message" => $result_temp['message'],
+            );
+
+            echo json_encode($temp);
+            exit;
         }
     }
 
@@ -324,7 +324,6 @@ else if ($process_mode == 'update') {
                             content = '${content}',
                             user_name = '${user_name}',
                             is_secret = '${is_secret}'
-                    
                             ${set_write_password}
                     
                     WHERE idx = '${idx}' 
@@ -336,13 +335,15 @@ else if ($process_mode == 'update') {
     // 첨부파일 처리
     for ($i = 0; $i < count($_FILES['file']['name']); $i++) {
         if ($_FILES['file']['name'][$i]) {
+
             $result_temp = fileUpload($table_name, $idx, "file", $_FILES['file'], $i);
+
             if ($result_temp['status'] == "error") { // 업로드 오류
                 $message_add =  " [주의 : " . $result_temp['message'] . "]";
 
                 $temp = array(
                     "status" => 0,
-                    "message" => "파일 저장 오류",
+                    "message" => $result_temp['message'],
                 );
 
                 echo json_encode($temp);
@@ -425,6 +426,12 @@ else if ($process_mode == 'view') {
     // echo $sql;
     $files = $db->query($sql)->fetchAll();
     $result['files'] = $files;
+    $result['img_url'][] = '';
+    foreach ($files as $file) {
+        if (in_array($file['file_extension'], $img_extension)) {
+            $result['img_url'][] = "../data/".$file['file_tmp_name'];
+        }
+    }
 
     $view_count = $result['view_count'] + 1;
 
@@ -562,6 +569,9 @@ else if ($process_mode == "comment_create") {
     $table_name = sanitize($_REQUEST['table_name']);
     $idx = sanitize($_REQUEST['idx']);
     $parent_comment_idx = sanitize($_REQUEST['parent_comment_idx']);
+    if (!$parent_comment_idx) {
+        $parent_comment_idx = 0;
+    }
     $user_name = sanitize($_REQUEST['user_name']);
     $comment = $_REQUEST['comment'];
     $comment_password = enc($_REQUEST['comment_password']);
@@ -632,6 +642,11 @@ else if ($process_mode == "comment_list") {
 
     $list = [];
     foreach ($result as $item) {
+
+        $item['delete_auth'] = 'N';
+        if ($item['is_admin'] == 'Y' || $item['create_user_code'] == $_SESSION['user_code']) {
+            $item['delete_auth'] = 'Y';
+        }
 
         $list[] = $item;
     }

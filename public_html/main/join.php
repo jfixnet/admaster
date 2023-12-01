@@ -48,17 +48,24 @@
             </div>
         </div>
 
-        <div class="form-group" style="margin-bottom: 20px;">
+        <div class="form-group phone-div" style="display:none;margin-bottom: 20px;">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-phone" style="font-size:22px; width: 25px;"></i></span>
                 <input form="form_main" type="text" id="phone" name="phone" class="form-control input-lg" placeholder="연락처" autocomplete="off" >
             </div>
         </div>
 
-        <div class="form-group" style="margin-bottom: 20px;">
+        <div class="form-group email-div" style="display:none;margin-bottom: 20px;">
             <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-envelope " style="font-size:22px; width: 25px;"></i></span>
                 <input form="form_main" type="text" id="email" name="email" class="form-control input-lg" placeholder="이메일" autocomplete="off" >
+            </div>
+        </div>
+
+        <div class="form-group address-div" style="display:none;margin-bottom: 20px;">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-map-marker " style="font-size:22px; width: 25px;"></i></span>
+                <input form="form_main" type="text" id="address" name="address" class="form-control input-lg" placeholder="주소" autocomplete="off" >
             </div>
         </div>
 
@@ -112,6 +119,34 @@
         });
     }
 
+    function setting() {
+        $.ajax({
+            type: "post",
+            data: $("#form_main").serialize() + "&process_mode=join_setting",
+            url: "../lib/user_ajax.php",
+            dataType: "json",
+            cache: false,
+            async: false,
+        }).done(function(result) {
+            if (result.data) {
+                if (result.data.address_check == 'Y') {
+                    $(".address-div").show();
+                }
+
+                if (result.data.email_check == 'Y') {
+                    $(".email-div").show();
+                }
+
+                if (result.data.phone_check == 'Y') {
+                    $(".phone-div").show();
+                }
+
+            } else {
+                toastr["error"](result.data.message);
+            }
+        });
+    }
+
     $('#code').on('input', function() {
         const user_code = $(this).val().trim();
 
@@ -144,6 +179,11 @@
                 }
             });
         }
+    });
+
+
+    $(function() {
+        setting();
     });
 
 </script>

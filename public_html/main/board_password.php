@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-sm-12 text-center">
                 <button type="button" class="btn btn-default btn-sm" onclick="history.back();">취소</button>
-                <button type="button" class="btn btn-primary btn-sm" id="write_password_check">확인</button>
+                <button type="button" class="btn btn-success btn-sm" id="write_password_check">확인</button>
             </div>
         </div>
 
@@ -44,6 +44,7 @@
     let table_name = getParameterByName('table_name');
     let idx = getParameterByName('idx');
     let type = getParameterByName('type');
+    let skin = getParameterByName('skin');
 
     $("#write_password_check").click(function() {
         boardPasswordCheck();
@@ -70,7 +71,7 @@
 
                 if (type == 's') {
                     setCookie('view_status', idx, 1);
-                    window.location.href = `board_view.php?table_name=${table_name}&idx=${idx}`;
+                    window.location.href = `board_view.php?table_name=${table_name}&idx=${idx}&skin=${skin}`;
                     return false;
                 } else if (type == 'd'){
                     deleteBoard();
@@ -78,7 +79,8 @@
                 }
 
                 setCookie('update_status', idx, 1);
-                window.location.href = `board_update.php?table_name=${table_name}&idx=${idx}`;
+                window.location.href = `board_update.php?table_name=${table_name}&idx=${idx}&skin=${skin}`;
+                return false;
             } else {
                 toastr["error"](result.message);
             }
@@ -95,7 +97,12 @@
             async: false,
         }).done(function(data) {
             if (data.status) {
-                window.location.href="board.php?table_name="+table_name;
+                if (skin == 'gallery') {
+                    window.location.href = `board_g.php?table_name=${table_name}`;
+                } else {
+                    window.location.href = `board.php?table_name=${table_name}`;
+                }
+                return false;
             } else {
                 toastr["error"](data.message);
             }

@@ -13,8 +13,8 @@
             <span class="font-bold" style="font-size: 20px;" id="page_title"></span>
         </div>
 
-        <div class="row mb-3" id="login_check_div">
-            <div class="col-sm-6">
+        <div class="row mb-3">
+            <div class="col-sm-6" id="login_check_div">
                 <!--<label class="col-sm-2 form-label"><span class="text-danger">*</span> 이름</label>-->
                 <input form="form" type="text" id="user_name" name="user_name" class="form-control form-control-sm required" autocomplete="off" placeholder="이름">
             </div>
@@ -36,7 +36,7 @@
         <div class="row mb-3">
             <div class="col-sm-12">
                 <!--<label class="col-sm-2 form-label"><span class="text-danger">*</span> 제목</label>-->
-                <input form="form" type="text" id="title" name="title" class="form-control form-control-sm required" autocomplete="off" placeholder="제목을 입력해주세요." required>
+                <input form="form" type="text" id="title" name="title" class="form-control form-control-sm required" autocomplete="off" placeholder="제목을 입력해주세요." maxlength="50" required>
             </div>
         </div>
         <div class="row mb-3">
@@ -62,7 +62,7 @@
         <div class="row">
             <div class="col-sm-12 text-center">
                 <button form="form" type="button" class="btn btn-default btn-sm" id="return_list">취소</button>
-                <button form="form" type="submit" class="btn btn-primary btn-sm" id="update_btn">글수정</button>
+                <button form="form" type="submit" class="btn btn-success btn-sm" id="update_btn">글수정</button>
             </div>
         </div>
 
@@ -78,11 +78,12 @@
 <script>
     let userName = '<?=$_SESSION['user_name']?>';
     let editor;
+    let attachFileNum;
 
-    // $("#login_check_div").show();
-    // if (userName) {
-    //     $("#login_check_div").hide();
-    // }
+    $("#login_check_div").show();
+    if (userName) {
+        $("#login_check_div").hide();
+    }
 
     function getParameterByName(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -94,6 +95,7 @@
     let table_name = getParameterByName('table_name');
     let idx = getParameterByName('idx');
     let type = getParameterByName('type');
+    let skin = getParameterByName('skin');
 
     // 모달 저장
     $("#form").on("submit", function() {
@@ -128,7 +130,12 @@
             async: false,
         }).done(function(data) {
             if (data.status) {
-                window.location.href="board.php?table_name="+table_name;
+                if (skin == 'gallery') {
+                    window.location.href = `board_g.php?table_name=${table_name}`;
+                } else {
+                    window.location.href = `board.php?table_name=${table_name}`;
+                }
+                return false;
             } else {
                 toastr["error"](data.message);
             }
@@ -161,17 +168,21 @@
 
                 // 첨부파일 표시
                 if (result.files.length > 0) {
+                    console.log(result.files.length)
+
                     result.files.forEach(function(item, index) {
                         if (item) {
-                            fileUploadAdd(index);
+                            fileUploadAdd(index, 'link');
                             $(".modal_file_place").eq( item.sort ).show();
-                            $(".modal_file_place").eq( item.sort ).find("a").attr("href", "/lib/download.php?code=" + item.file_tmp_name);
+                            $(".modal_file_place").eq( item.sort ).find("a").attr("href", "../lib/download.php?code=" + item.file_tmp_name);
                             $(".modal_file_place").eq( item.sort ).find("span").text(item.file_name);
                             $(".modal_file_place").eq( item.sort ).find("button").data({ code: item.file_tmp_name,  sort : item.sort });
                         }
                     })
+
+                    fileUploadAdd(0,'');
                 } else {
-                    fileUploadAdd(0);
+                    fileUploadAdd(0,'');
                 }
 
             } else {
@@ -181,48 +192,60 @@
     }
 
     $("#return_list").click(function() {
-        window.location.href = "board.php?table_name="+table_name;
+        if (skin == 'gallery') {
+            window.location.href = `board_g.php?table_name=${table_name}`;
+        } else {
+            window.location.href = `board.php?table_name=${table_name}`;
+        }
+        return false;
     });
 
-    function fileUploadAdd(index) {
+    function fileUploadAdd(index, type) {
         let html = '';
 
-        if ($(".file_row").length >= 3) {
-            toastr["error"]("첨부파일은 3개 이하로 등록 가능합니다.");
+        if ($(".file_row").length >= attachFileNum) {
+            toastr["error"]("첨부파일은 " + attachFileNum + "개 이하로 등록 가능합니다.");
             return false;
         }
 
-        html = `
+        if (type) {
+            html = `
                 <div class="file_row">
-                    <div class="modal_file_place" style="display: none;">
-                        <a href="#" class="btn btn-w-m btn-default"><i class="fa fa-download"></i> <span></span></a>
+                    <div class="modal_file_place m-t-xs" style="display: none;">
+                        <a href="#" class="btn btn-w-m btn-sm btn-default m-r-xs"><i class="fa fa-download"></i> <span></span></a>
                         <button class="btn btn-danger btn-sm modal_btn_file_delete">파일 삭제</button>
                     </div>
-
-                    <div class="fileinput fileinput-new input-group m-t-xs" data-provides="fileinput">
-                        <div class="form-control input-sm" data-trigger="fileinput">
-                            <i class="glyphicon glyphicon-file fileinput-exists"></i>
-                            <span class="fileinput-filename" style="font-size: 11px; margin-top: -4px;"></span>
-                        </div>
-                        <span class="input-group-addon btn btn-default btn-file">
-                            <span class="fileinput-new"><!-- Select file -->파일 선택</span>
-                            <span class="fileinput-exists"><!-- Change -->변경</span>
-                            <input form="form" type="file" name="file[]" data-input-name="file[]">
-                        </span>
-                        <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput"><!-- Remove -->비우기</a>
-                        `;
-        if (index == 0) {
-            html += `<span class="input-group-addon btn btn-success" onclick="fileUploadAdd()">+</span>`
+                </div>`;
         } else {
-            html += `<span class="input-group-addon btn btn-danger fileUploadRemove">-</span>`;
+            html = `<div class="file_row">
+                        <div class="fileinput fileinput-new input-group m-t-xs" data-provides="fileinput">
+                            <div class="form-control input-sm" data-trigger="fileinput">
+                                <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                <span class="fileinput-filename" style="font-size: 11px; margin-top: -4px;"></span>
+                            </div>
+                            <span class="input-group-addon btn btn-default btn-file">
+                                <span class="fileinput-new"><!-- Select file -->파일 선택</span>
+                                <span class="fileinput-exists"><!-- Change -->변경</span>
+                                <input form="form" type="file" name="file[]" data-input-name="file[]">
+                            </span>
+                            <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput"><!-- Remove -->비우기</a>`;
+
+            if (index == 0) {
+                html += `<span class="input-group-addon btn btn-success" onclick="fileUploadAdd()">+</span>`
+            } else {
+                html += `<span class="input-group-addon btn btn-danger fileUploadRemove">-</span>`;
+            }
+
+            html += `</div>
+                </div>`;
         }
-        html += `</div>
-                    <!--<div class="hr-line-dashed"></div>-->
-                </div>
-        `
 
         $(".file_list").append(html);
     }
+
+    $(document).on('click', '.fileUploadRemove', function() {
+        $(this).parent().parent().remove();
+    });
 
     // 첨부 파일 삭제
     $(document).on("click", ".modal_btn_file_delete", function() {
@@ -269,12 +292,13 @@
             async: false,
         }).done(function(result) {
             if (result) {
-                console.log(result);
-                $("#page_title").text(result.table_title);
+                $("#page_title").text(result.data.table_title);
 
-                if (result.secret_mode == 'A') {
+                if (result.data.secret_mode == 'A') {
                     $("#is_secret").prop("disabled", true);
                 }
+
+                attachFileNum = result.data.attach_file_num;
 
             } else {
                 console.log('페이지 세팅 오류');
@@ -295,7 +319,7 @@
                     'bulletedList',
                     'numberedList',
                     '|',
-                    'imageUpload',
+                    // 'imageUpload',
                     'blockQuote',
                     '|',
                     'undo',
@@ -320,7 +344,6 @@
                 }
             }
         }
-
 
         deleteCookie('update_status');
         pageSetting();

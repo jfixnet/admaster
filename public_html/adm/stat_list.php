@@ -14,7 +14,7 @@
                 <input type="text" form="form_main" class="form-control form-control-sm" id="srch_start_date" name="srch_start_date" autocomplete="off" required>
                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                 <input type="text" form="form_main" class="form-control form-control-sm" id="srch_end_date" name="srch_end_date" autocomplete="off" required>
-            <button form="form_main" type="button" class="btn btn-primary" id="search_btn"><i class="fa fa-search"></i></button>
+            <button form="form_main" type="button" class="btn btn-success" id="search_btn"><i class="fa fa-search"></i></button>
             </div>
         </div>
     </div>

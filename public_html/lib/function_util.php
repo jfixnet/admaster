@@ -274,12 +274,25 @@ function fileUpload($table, $idx, $type, $file, $sort) {
     }
 
     $sql = "
+			            SELECT sort
+			            FROM jf_attach_file
+			            WHERE
+		                    fk_table = '${table}',
+				                    AND fk_idx = '${idx}'
+                        ORDER BY sort;
+	        ";
+    $attach_file_sort = $db->query($sql)->fetchArray();
+
+    if ($attach_file_sort) {
+        $sort = $attach_file_sort['sort'];
+    }
+
+    $sql = "
 		            INSERT INTO jf_attach_file
 		            SET
 		                    fk_table = '${table}',
 		                    fk_idx = '${idx}',
 		                    sort = '${sort}',
-
 		                    file_extension = '${file_extension}',
 		                    file_name = '${file_name}',
 		                    file_tmp_name = '${file_tmp_name}',
@@ -291,34 +304,34 @@ function fileUpload($table, $idx, $type, $file, $sort) {
     $lastIDX = $db->lastInsertID();
 
     // 과거 데이터 처리
-    if ($result != -1) {
-
-        // 과거 데이터 검색
-        $sql = "
-			            SELECT *
-			            FROM jf_attach_file
-			            WHERE
-				                    fk_table = '${table}'
-				                    AND fk_idx = '${idx}'
-				                    AND sort = '${sort}'
-				                    AND idx < '${lastIDX}'
-	    ";
-        $list = $db->query($sql)->fetchAll();
-
-        foreach ($list as $item) {
-
-            // 과거 데이터 삭제
-            $sql = "
-				            DELETE FROM jf_attach_file
-				            WHERE idx = '${item['idx']}'
-				            LIMIT 1
-		    ";
-            $db->query($sql);
-
-            // 파일 삭제
-            @unlink($upload_root . "/" . $item['file_tmp_name']);
-        }
-    }
+    //if ($result != -1) {
+    //
+    //    // 과거 데이터 검색
+    //    $sql = "
+	//		            SELECT *
+	//		            FROM jf_attach_file
+	//		            WHERE
+	//			                    fk_table = '${table}'
+	//			                    AND fk_idx = '${idx}'
+	//			                    AND sort = '${sort}'
+	//			                    AND idx < '${lastIDX}'
+	//    ";
+    //    $list = $db->query($sql)->fetchAll();
+    //
+    //    foreach ($list as $item) {
+    //
+    //        // 과거 데이터 삭제
+    //        $sql = "
+	//			            DELETE FROM jf_attach_file
+	//			            WHERE idx = '${item['idx']}'
+	//			            LIMIT 1
+	//	    ";
+    //        $db->query($sql);
+    //
+    //        // 파일 삭제
+    //        @unlink($upload_root . "/" . $item['file_tmp_name']);
+    //    }
+    //}
 
     $result = [
         "tmp_name" =>  $file_tmp_name

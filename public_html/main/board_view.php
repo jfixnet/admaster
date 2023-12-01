@@ -34,11 +34,17 @@
 
         <div class="row mb-3">
             <div class="col-sm-12">
+                <div class="" id="image_view"></div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-12">
                 <div class="" id="content" style="min-height: 200px;"></div>
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group file_div" style="display: none;">
             <label class="col-xs-2 control-label">첨부파일</label>
             <div class="col-xs-10">
                 <div class="file_view_list">
@@ -95,6 +101,7 @@
         let table_name = getParameterByName('table_name');
         let idx = getParameterByName('idx');
         let type = getParameterByName('type');
+        let skin = getParameterByName('skin');
 
         function view() {
             let process_mode = 'view'
@@ -116,6 +123,8 @@
 
                     // 첨부파일 표시
                     if (result.files.length > 0) {
+                        $(".file_div").show();
+
                         result.files.forEach(function(item, index) {
                             if (item) {
                                 fileViewAdd(index);
@@ -123,6 +132,23 @@
                                 $(".modal_view_file_place").eq( item.sort ).find("a").attr("href", "../lib/download.php?code=" + item.file_tmp_name);
                                 $(".modal_view_file_place").eq( item.sort ).find("span").text(item.file_name);
                                 $(".modal_view_file_place").eq( item.sort ).find("button").data({ code: item.file_tmp_name,  sort : item.sort });
+                            }
+                        })
+                    }
+
+                    // 이미지 표시
+                    if (result.img_url.length > 0) {
+                        result.img_url.forEach(function(item, index) {
+                            if (item) {
+                                let html = `
+                                    <div class="row m-b-xs">
+                                        <div class="col-sm-12">
+                                            <img src="${item}" alt="" title="" style="max-height: 200px;">
+                                        </div>
+                                    </div>
+
+                                `;
+                                $("#image_view").append(html);
                             }
                         })
                     }
@@ -159,19 +185,19 @@
         }
 
         $("#return_list").click(function() {
-            window.location.href = "board.php?table_name="+table_name;
+            if (skin == 'gallery') {
+                window.location.href = `board_g.php?table_name=${table_name}`;
+            } else {
+                window.location.href = `board.php?table_name=${table_name}`;
+            }
             return false;
         });
 
         $("#update").click(function() {
             if (isAdmin == 'Y') {
-                window.location.href = `board_update.php?table_name=${table_name}&idx=${idx}`;
+                window.location.href = `board_update.php?table_name=${table_name}&idx=${idx}&skin=${skin}`;
             } else {
-                // if (type == 'v') {
-                //     window.location.href = `/board/board_update.php?table_name=${table_name}&idx=${idx}`;
-                // } else {
-                window.location.href = `board_password.php?table_name=${table_name}&idx=${idx}`;
-                // }
+                window.location.href = `board_password.php?table_name=${table_name}&idx=${idx}&skin=${skin}`;
             }
             return false;
         });
@@ -181,7 +207,7 @@
                 deleteBoard();
                 return false;
             }
-            window.location.href = `board_password.php?table_name=${table_name}&idx=${idx}&type=d`;
+            window.location.href = `board_password.php?table_name=${table_name}&idx=${idx}&type=d&skin=${skin}`;
             return false;
         });
 
@@ -218,7 +244,7 @@
             $(".file_view_list").append(html);
         }
 
-        function commentAdd(comment_idx, user_name, comment, datetime) {
+        function commentAdd(comment_idx, user_name, comment, datetime, delete_auth) {
             let html = `
                     <div class="row m-t-md">
                         <div class="col-sm-2 text-left">
@@ -228,12 +254,16 @@
                             <div class="well">${comment}</div>
                         </div>
                         <div class="col-sm-3 text-right">
-                            <small class="text-muted m-r-sm">${datetime}</small>
-                            <button type="button" class="btn btn-xs btn-danger" onclick="commentDelete(${comment_idx})">삭제</button>
+                            <small class="text-muted m-r-sm">${datetime}</small>`;
+            if (delete_auth == 'Y') {
+                html += `<button type="button" class="btn btn-xs btn-danger" onclick="commentDelete(${comment_idx})">삭제</button>`;
+            }
+
+            html +=`
                         </div>
                     </div>
                     <hr style="border-bottom: 1px solid #f4f4f4;">
-        `;
+            `;
 
             $("#comment_list").append(html);
         }
@@ -260,7 +290,6 @@
         }
 
         function commentList(table_name, idx) {
-
             let process_mode = 'comment_list'
 
             $.ajax({
@@ -280,11 +309,12 @@
                 $("#comment").val('');
                 if (result) {
                     $.each(result, function(key, val) {
-                        commentAdd(val.idx, val.user_name, val.comment, val.create_date);
+                        commentAdd(val.idx, val.user_name, val.comment, val.create_date, val.delete_auth);
                     });
                     $("#comment_total").text(result.length);
                 } else {
                     let html = `<div class="text-center" style="padding: 80px 0 !important">등록된 댓글이 없습니다</div>`;
+                    $("#comment_total").text(0);
                     $("#comment_list").append(html);
                 }
             });
@@ -302,16 +332,15 @@
                 async: false,
             }).done(function(result) {
                 if (result) {
-                    console.log(result);
-                    $("#page_title").text(result.table_title);
+                    $("#page_title").text(result.data.table_title);
 
                     $("#comment_div").hide();
-                    if (result.comment_mode == 'Y') {
+                    if (result.data.comment_mode == 'Y') {
                         $("#comment_div").show();
                         $(".div_comment_textarea").show();
                     }
 
-                    if (isAdmin == 'N') {
+                    if (!isAdmin || isAdmin == 'N') {
                         $(".div_comment_textarea").hide();
                     }
 

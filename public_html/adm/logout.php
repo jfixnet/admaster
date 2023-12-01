@@ -1,7 +1,8 @@
-<?php include "../include/config.php"; ?>
+<?php include "../lib/config.php"; ?>
 
 <?php
 session_start();
+
 // 세션 삭제
 session_destroy();
 
