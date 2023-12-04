@@ -128,29 +128,32 @@
                         result.files.forEach(function(item, index) {
                             if (item) {
                                 fileViewAdd(index);
-                                $(".modal_view_file_place").eq( item.sort ).show();
-                                $(".modal_view_file_place").eq( item.sort ).find("a").attr("href", "../lib/download.php?code=" + item.file_tmp_name);
-                                $(".modal_view_file_place").eq( item.sort ).find("span").text(item.file_name);
-                                $(".modal_view_file_place").eq( item.sort ).find("button").data({ code: item.file_tmp_name,  sort : item.sort });
+                                $(".modal_view_file_place").eq( index ).show();
+                                $(".modal_view_file_place").eq( index ).find("a").attr("href", "../lib/download.php?code=" + item.file_tmp_name);
+                                $(".modal_view_file_place").eq( index ).find("span").text(item.file_name);
+                                $(".modal_view_file_place").eq( index ).find("button").data({ code: item.file_tmp_name,  sort : index });
                             }
                         })
                     }
 
                     // 이미지 표시
                     if (result.img_url.length > 0) {
+                        let html = '';
                         result.img_url.forEach(function(item, index) {
                             if (item) {
-                                let html = `
+                                html += `
                                     <div class="row m-b-xs">
                                         <div class="col-sm-12">
                                             <img src="${item}" alt="" title="" style="max-height: 200px;">
                                         </div>
                                     </div>
-
                                 `;
-                                $("#image_view").append(html);
                             }
-                        })
+                        });
+
+                        html += `<hr>`;
+
+                        $("#image_view").append(html);
                     }
 
                     commentList(table_name, idx);

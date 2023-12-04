@@ -35,15 +35,13 @@
 
         <div class="row mb-3">
             <div class="col-sm-12">
-                <!--<label class="col-sm-2 form-label"><span class="text-danger">*</span> 제목</label>-->
                 <input form="form" type="text" id="title" name="title" class="form-control form-control-sm required" autocomplete="off" placeholder="제목을 입력해주세요." maxlength="50" required>
             </div>
         </div>
 
         <div class="row mb-3">
             <div class="col-sm-12">
-                <!--<label class="col-sm-2 form-label"><span class="text-danger"></span> 내용</label>-->
-                <textarea form="form" id="content" name="content" class="" style="width:100%;"></textarea>
+                <textarea form="form" id="content" name="content" class="summernote" style="width:100%;"></textarea>
             </div>
         </div>
 
@@ -78,8 +76,43 @@
     <script>
         let userName = '<?=$_SESSION['user_name']?>';
         let isAdmin = '<?=$_SESSION['is_admin']?>';
-        let editor;
         let attachFileNum;
+
+        // summernote 이미지 업로드 처리
+        function sendFile($summernote, file) {
+            var formData = new FormData();
+            formData.append("file", file);
+            formData.append("process_mode", 'summernote_img_upload');
+
+            $.ajax({
+                url: '../lib/board_ajax.php',
+                data: formData,
+                dataType: "json",
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                success: function (result) {
+                    console.log(result.data);
+                    if (result.status == 0) {
+                        alert('용량이 너무 크거나 이미지 파일이 아닙니다.');
+                        return false;
+                    } else {
+                        console.log(result.data);
+                        $summernote.summernote('insertImage', result.data, function ($image) {
+                            $image.attr('src', result.data);
+                            $image.attr('class', 'childImg');
+                        });
+
+                        var imgUrl = $("#imgUrl").val();
+                        if (imgUrl) {
+                            imgUrl = imgUrl + ",";
+                        }
+                        $("#imgUrl").val(imgUrl + result.data);
+                    }
+                }
+            });
+        }
 
         $("#login_check_div").show();
         if (userName) {
@@ -108,7 +141,7 @@
         function create() {
             let process_mode = "create"; // 등록 모드
 
-            // $("#content").val($(".summernote").summernote("code")); // 에디터 처리
+            $("#content").val($(".summernote").summernote("code")); // 에디터 처리
             $("#idx").val(idx); // 에디터 처리
             $("#form_table_name").val(table_name); // 에디터 처리
             $("#is_secret").prop("disabled", false);
@@ -118,9 +151,6 @@
             var formData = new FormData( $("#form")[0] );
             formData.append("process_mode", process_mode);
             formData.append("user_name", user_name);
-
-            // const editorData = editor.getData();
-            // formData.append("content", editorData);
 
             $.ajax({
                 type: "post",
@@ -245,52 +275,35 @@
             });
         }
 
-        var oEditors = [];
-
-    function smartEditor(){
-        nhn.husky.EZCreator.createInIFrame({
-            oAppRef: oEditors,
-            elPlaceHolder: "content",
-            sSkinURI: "../lib/smarteditor/dist/SmartEditor2Skin.html",
-            fCreator: "createSEditor2"
-        });
-    }
-
-        // ClassicEditor
-        //     .create( document.querySelector( '#content' ),{
-        //         language: "ko",
-        //         toolbar: {
-        //             items: [
-        //                 'heading',
-        //                 '|',
-        //                 'bold',
-        //                 'italic',
-        //                 '|',
-        //                 'bulletedList',
-        //                 'numberedList',
-        //                 '|',
-        //                 // 'imageUpload',
-        //                 'blockQuote',
-        //                 '|',
-        //                 'undo',
-        //                 'redo'
-        //             ]
-        //         },
-        //         simpleUpload: {
-        //             uploadUrl: '/your_upload_endpoint', // 이미지 업로드를 처리할 서버 측 엔드포인트 URL
-        //         }
-        //     } )
-        //     .then( newEditor => {
-        //         editor = newEditor;
-        //     } )
-        //     .catch( error => {
-        //         console.error( error );
-        //     } );
-
         $(function() {
+
+
+            // summernote 적용
+            var $summernote = $('.summernote').summernote({
+                lang: 'ko-KR', // default: 'en-US'
+                tabsize: 2,
+                height: 400,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['view', ['help']]
+                ],
+                callbacks: {
+                    onImageUpload: function (files) {
+                        for (var i = 0; i < files.length; i++) {
+                            sendFile($summernote, files[i]);
+                        }
+                    }
+                }
+            });
+
+
             pageSetting();
             fileUploadAdd(0);
-            smartEditor();
         });
 
     </script>

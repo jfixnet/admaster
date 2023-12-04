@@ -42,6 +42,11 @@
     <!-- jQuery UI -->
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js" integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
 
+    <!-- include summernote css/js -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
+
     <!-- Holder -->
     <script src="https://cdn.jsdelivr.net/npm/holderjs@2.9.9/holder.min.js"></script>
 
@@ -65,15 +70,6 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/4.0.0/js/jasny-bootstrap.min.js"></script>
-
-    <!--smarteditor-->
-    <script src="../lib/smarteditor/dist/js/service/HuskyEZCreator.js"></script>
-
-    <!-- ck editor -->
-    <!--<script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>-->
-    <!--<script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/translations/ko.js"></script>-->
-    <!--<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>-->
-    <!--<script src="https://cdn.ckeditor.com/4.22.1/standard/lang/ko.js"></script>-->
 
 
 </head>

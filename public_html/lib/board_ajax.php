@@ -178,6 +178,7 @@ else if ($process_mode == "gallery_list") {
 
         $attach_file_data = $db->query($sql)->fetchAll();
 
+        // 첨부파일 이미지 표시
         $item['attach_file'] = '';
         $item['attach_file_url'] = 'img/noImage.jpg';
         if ($attach_file_data) {
@@ -187,6 +188,16 @@ else if ($process_mode == "gallery_list") {
                     $item['attach_file_url'] = "../data/".$file['file_tmp_name'];
                 }
             }
+        }
+
+        // summernote 업로드 이미지 표시
+        $pattern = '/<img.*?src=["\'](.*?)["\'].*?>/i';
+
+        preg_match($pattern, $item['content'], $matches);
+
+        if (isset($matches[1])) {
+            $image_src = $matches[1];
+            $item['attach_file_url'] = $image_src;
         }
 
         $list[] = $item;
@@ -426,7 +437,7 @@ else if ($process_mode == 'view') {
     // echo $sql;
     $files = $db->query($sql)->fetchAll();
     $result['files'] = $files;
-    $result['img_url'][] = '';
+    $result['img_url'] = [];
     foreach ($files as $file) {
         if (in_array($file['file_extension'], $img_extension)) {
             $result['img_url'][] = "../data/".$file['file_tmp_name'];
@@ -681,5 +692,58 @@ else if ($process_mode == "comment_delete") {
         );
     }
 
+    echo json_encode($temp);
+}
+
+else if ($process_mode == "summernote_img_upload") {
+    // 용량 체크
+    if ($_FILES['file']['size'] > 10240000) { // 10메가
+        $temp = array(
+            "status" => 0,
+            "message" => "파일 용량이 초과했습니다.",
+        );
+
+        echo json_encode($temp);
+        exit;
+    }
+
+    // 확장자 체크
+    $ext = substr(strrchr($_FILES['file']['name'],"."), 1);
+    $ext = strtolower($ext);
+    if ($ext != "jpg" and $ext != "png" and $ext != "jpeg" and $ext != "gif") {
+        $temp = array(
+            "status" => 0,
+            "message" => "업로드 오류",
+        );
+
+        echo json_encode($temp);
+        exit;
+    }
+
+    // 저장
+    $name = date("YmdHis") . "_" . substr(rand(), 0, 4);
+    $filename = $name . '.' . $ext;
+    $upload_root = __DIR__."/../data/editor";
+    $target = $upload_root . "/" . $filename;
+    $location =  $_FILES['file']['tmp_name'];
+
+    if (!move_uploaded_file($location, $target)) {
+        $temp = array(
+            "status" => 0,
+            "message" => "업로드 오류",
+        );
+
+        echo json_encode($temp);
+        exit;
+    }
+
+    //echo "../data/summernote/".$filename; // TODO :: 경로명 처리
+
+
+    $temp = array(
+        "status" => 1,
+        "data" => '../data/editor/'.$filename,
+        "message" => "업로드 되었습니다.",
+    );
     echo json_encode($temp);
 }

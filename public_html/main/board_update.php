@@ -77,8 +77,43 @@
 
 <script>
     let userName = '<?=$_SESSION['user_name']?>';
-    let editor;
     let attachFileNum;
+
+    // summernote 이미지 업로드 처리
+    function sendFile($summernote, file) {
+        var formData = new FormData();
+        formData.append("file", file);
+        formData.append("process_mode", 'summernote_img_upload');
+
+        $.ajax({
+            url: '../lib/board_ajax.php',
+            data: formData,
+            dataType: "json",
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            success: function (result) {
+                console.log(result.data);
+                if (result.status == 0) {
+                    alert('용량이 너무 크거나 이미지 파일이 아닙니다.');
+                    return false;
+                } else {
+                    console.log(result.data);
+                    $summernote.summernote('insertImage', result.data, function ($image) {
+                        $image.attr('src', result.data);
+                        $image.attr('class', 'childImg');
+                    });
+
+                    var imgUrl = $("#imgUrl").val();
+                    if (imgUrl) {
+                        imgUrl = imgUrl + ",";
+                    }
+                    $("#imgUrl").val(imgUrl + result.data);
+                }
+            }
+        });
+    }
 
     $("#login_check_div").show();
     if (userName) {
@@ -111,12 +146,11 @@
         $("#form_table_name").val( table_name ); // 에디터 처리
 
         $("#is_secret").prop("disabled", false);
+        $("#content").val($(".summernote").summernote("code")); // 에디터 처리
 
         var formData = new FormData( $("#form")[0] );
         formData.append("process_mode", process_mode);
 
-        const editorData = editor.getData();
-        formData.append("content", editorData);
 
         $.ajax({
             type: "post",
@@ -143,6 +177,9 @@
     }
 
     function view() {
+
+        $(".summernote").summernote("code", ""); // 에디터 처리
+
         let process_mode = 'view'
 
         $.ajax({
@@ -157,7 +194,7 @@
                 $("#user_name").val(result.user_name);
                 $("#title").val(result.title);
 
-                editor.setData(result.content);
+                $(".summernote").summernote("code", result.content); // 에디터 처리
 
                 $("#is_secret").prop("checked", false);
                 if (result.is_secret == 'Y') {
@@ -168,15 +205,14 @@
 
                 // 첨부파일 표시
                 if (result.files.length > 0) {
-                    console.log(result.files.length)
 
                     result.files.forEach(function(item, index) {
                         if (item) {
                             fileUploadAdd(index, 'link');
-                            $(".modal_file_place").eq( item.sort ).show();
-                            $(".modal_file_place").eq( item.sort ).find("a").attr("href", "../lib/download.php?code=" + item.file_tmp_name);
-                            $(".modal_file_place").eq( item.sort ).find("span").text(item.file_name);
-                            $(".modal_file_place").eq( item.sort ).find("button").data({ code: item.file_tmp_name,  sort : item.sort });
+                            $(".modal_file_place").eq( index ).show();
+                            $(".modal_file_place").eq( index ).find("a").attr("href", "../lib/download.php?code=" + item.file_tmp_name);
+                            $(".modal_file_place").eq( index ).find("span").text(item.file_name);
+                            $(".modal_file_place").eq( index ).find("button").data({ code: item.file_tmp_name,  sort : index });
                         }
                     })
 
@@ -306,34 +342,6 @@
         });
     }
 
-    ClassicEditor
-        .create( document.querySelector( '#content' ),{
-            language: "ko",
-            toolbar: {
-                items: [
-                    'heading',
-                    '|',
-                    'bold',
-                    'italic',
-                    '|',
-                    'bulletedList',
-                    'numberedList',
-                    '|',
-                    // 'imageUpload',
-                    'blockQuote',
-                    '|',
-                    'undo',
-                    'redo'
-                ]
-            },
-        } )
-        .then( newEditor => {
-            editor = newEditor;
-        } )
-        .catch( error => {
-            console.error( error );
-        } );
-
     $(function() {
 
         if (type == 's') {
@@ -344,6 +352,29 @@
                 }
             }
         }
+
+        // summernote 적용
+        var $summernote = $('.summernote').summernote({
+            lang: 'ko-KR', // default: 'en-US'
+            tabsize: 2,
+            height: 400,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['help']]
+            ],
+            callbacks: {
+                onImageUpload: function (files) {
+                    for (var i = 0; i < files.length; i++) {
+                        sendFile($summernote, files[i]);
+                    }
+                }
+            }
+        });
 
         deleteCookie('update_status');
         pageSetting();

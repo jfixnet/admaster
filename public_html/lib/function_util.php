@@ -242,6 +242,7 @@ function fileUpload($table, $idx, $type, $file, $sort) {
     $file_extension = strtolower( end( $file_name_array ) ); // 확장자
     $tmp_name = $file['tmp_name'][$sort]; // 임시 파일명
     $file_tmp_name = str_replace("/tmp/", "", $tmp_name) . '-' . $sort . '-' . date("YmdHis"); // 조작된 임시 파일명
+    $file_tmp_name = date("YmdHis") . "_" . substr(rand(), 0, 4);
     $file_size = $file['size'][$sort]; // 용량
 
     // 기타 설정
@@ -277,8 +278,8 @@ function fileUpload($table, $idx, $type, $file, $sort) {
 			            SELECT sort
 			            FROM jf_attach_file
 			            WHERE
-		                    fk_table = '${table}',
-				                    AND fk_idx = '${idx}'
+		                    fk_table = '${table}'
+                        AND fk_idx = '${idx}'
                         ORDER BY sort;
 	        ";
     $attach_file_sort = $db->query($sql)->fetchArray();
