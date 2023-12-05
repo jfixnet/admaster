@@ -9,15 +9,15 @@
         <div class="collapse navbar-collapse m-t-md" id="navbarNavDropdown" style="">
             <ul class="nav justify-content-center">
                 <li class="nav-item m-r-sm">
-                    <a class="nav-link" href="board.php?table_name=notice">공지사항</a>
+                    <?= getTopMenuList('notice') // 메뉴 호출 ?>
                 </li>
 
                 <li class="nav-item m-r-sm">
-                    <a class="nav-link" href="board_g.php?table_name=freeboard">자유게시판</a>
+                    <?= getTopMenuList('freeboard') // 메뉴 호출 ?>
                 </li>
 
                 <li class="nav-item m-r-sm">
-                    <a class="nav-link" href="board.php?table_name=qna">문의게시판</a>
+                    <?= getTopMenuList('qna') // 메뉴 호출 ?>
                 </li>
 
                 <? if($_SESSION['user_code']) {?>

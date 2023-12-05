@@ -15,6 +15,29 @@ function sanitize($str)
     return $str;
 }
 
+function getTopMenuList($table_name) {
+    global $db;
+
+    $sql = "
+					SELECT *
+					FROM jf_board_management
+					WHERE
+							table_name = '${table_name}'
+					ORDER BY idx ASC
+	";
+    $board_data = $db->query($sql)->fetchArray();
+
+    //var_dump($board_data);
+
+    if ($board_data['skin'] == 'list') {
+        $result = "<a class='nav-link' href='board.php?table_name=${table_name}'>${board_data['table_title']}</a>";
+    } else {
+        $result = "<a class='nav-link' href='board_g.php?table_name=${table_name}'>${board_data['table_title']}</a>";
+    }
+
+    return $result;
+}
+
 // by https://github.com/ttodua/useful-php-scripts
 function EXPORT_DATABASE($host, $user, $pass, $name, $tables = false, $backup_name = false)
 {
