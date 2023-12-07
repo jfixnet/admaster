@@ -322,7 +322,7 @@ function fileUpload($table, $idx, $type, $file, $sort) {
 		                    file_tmp_name = '${file_tmp_name}',
 		                    file_size = '${file_size}',
 
-                            create_employee_code = '${_SESSION['employee_code']}'
+                            create_user_code = '${_SESSION['employee_code']}'
     ";
     $result = $db->query($sql)->affectedRows();
     $lastIDX = $db->lastInsertID();

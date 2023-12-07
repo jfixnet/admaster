@@ -15,6 +15,9 @@
                         <a class="nav-link" href="board_admin.php">게시판관리</a>
                     </li>
                     <li class="nav-item m-r-sm">
+                        <a class="nav-link" href="popup_admin.php">팝업관리</a>
+                    </li>
+                    <li class="nav-item m-r-sm">
                         <a class="nav-link" href="stat_list.php">사이트통계</a>
                     </li>
                     <li class="nav-item m-r-sm">

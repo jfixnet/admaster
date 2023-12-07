@@ -1113,3 +1113,160 @@ else if ($process_mode == 'board_setting_update') {
 
     echo json_encode($temp);
 }
+
+else if ($process_mode == "popup_list") {
+    $sql = "
+                    SELECT *
+                    
+                    FROM jf_popup_management
+                    
+                    WHERE
+                        1 = 1
+                                        
+                    ORDER BY idx desc
+    ";
+
+    $result = $db->query($sql)->fetchAll();
+
+    echo json_encode($result);
+
+}
+
+else if ($process_mode == 'popup_create') {
+    $popup_title = sanitize($_REQUEST['popup_title']);
+    $popup_content = $_REQUEST['popup_content'];
+    $start_date = $_REQUEST['start_date'];
+    $end_date = $_REQUEST['end_date'];
+    $popup_width_size = $_REQUEST['popup_width_size'];
+    $popup_height_size = $_REQUEST['popup_height_size'];
+    $popup_top_size = $_REQUEST['popup_top_size'];
+    $popup_left_size = $_REQUEST['popup_left_size'];
+    $status = $_REQUEST['status'];
+
+    $sql = "
+                    INSERT INTO jf_popup_management
+                    
+                    SET 
+                        popup_title = '${popup_title}',
+                        popup_content = '${popup_content}',
+                        start_date = '${start_date}',
+                        end_date = '${end_date}',
+                        popup_width_size = '${popup_width_size}',
+                        popup_height_size = '${popup_height_size}',
+                        popup_top_size = '${popup_top_size}',
+                        popup_left_size = '${popup_left_size}',
+                        status = '${status}',
+                        create_user_code = '${_SESSION['user_code']}'
+    ";
+
+    $result = $db->query($sql)->affectedRows();
+
+    // 분기
+    if ($result != -1) {
+        $temp = array(
+            "status" => 1,
+            "message" => "저장되었습니다.",
+        );
+    } else {
+        $temp = array(
+            "status" => 0,
+            "message" => "저장 오류",
+        );
+    }
+
+    echo json_encode($temp);
+}
+
+else if ($process_mode == 'popup_update') {
+
+    $idx = $_REQUEST['idx'];
+    $popup_title = sanitize($_REQUEST['popup_title']);
+    $popup_content = $_REQUEST['popup_content'];
+    $start_date = $_REQUEST['start_date'];
+    $end_date = $_REQUEST['end_date'];
+    $popup_width_size = $_REQUEST['popup_width_size'];
+    $popup_height_size = $_REQUEST['popup_height_size'];
+    $popup_top_size = $_REQUEST['popup_top_size'];
+    $popup_left_size = $_REQUEST['popup_left_size'];
+    $status = $_REQUEST['status'];
+
+    $sql = "
+                UPDATE jf_popup_management
+                SET
+                        popup_title = '${popup_title}',
+                        popup_content = '${popup_content}',
+                        start_date = '${start_date}',
+                        end_date = '${end_date}',
+                        popup_width_size = '${popup_width_size}',
+                        popup_height_size = '${popup_height_size}',
+                        popup_top_size = '${popup_top_size}',
+                        popup_left_size = '${popup_left_size}',
+                        status = '${status}'
+                        
+                WHERE idx = '${idx}' 
+                LIMIT 1
+";
+
+    $result = $db->query($sql)->affectedRows();
+
+    // 분기
+    if ($result != -1) {
+        $temp = array(
+            "status" => 1,
+            "message" => "수정되었습니다.",
+        );
+    } else {
+        $temp = array(
+            "status" => 0,
+            "message" => "저장 오류",
+        );
+    }
+
+    echo json_encode($temp);
+}
+
+else if ($process_mode == 'popup_delete') {
+    $idx = $_REQUEST['idx'];
+
+    $sql = "
+                DELETE FROM jf_popup_management
+                WHERE idx = '${idx}' 
+                LIMIT 1
+";
+
+    $result = $db->query($sql)->affectedRows();
+
+    // 분기
+    if ($result != -1) {
+        $temp = array(
+            "status" => 1,
+            "message" => "삭제되었습니다.",
+        );
+    } else {
+        $temp = array(
+            "status" => 0,
+            "message" => "삭제 오류",
+        );
+    }
+
+    echo json_encode($temp);
+}
+
+else if ($process_mode == 'popup_view') {
+    $idx = sanitize($_REQUEST['idx']);
+
+    $sql = "
+                    SELECT *
+                    
+                    FROM jf_popup_management
+                    
+                    WHERE
+                        1 = 1
+                    
+                    AND idx = '${idx}'
+    ";
+
+    $result = $db->query($sql)->fetchArray();
+
+    echo json_encode($result);
+}

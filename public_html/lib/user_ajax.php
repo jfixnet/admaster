@@ -334,6 +334,39 @@ else if ($process_mode == 'user_info_update') {
     echo json_encode($temp);
 }
 
+else if ($process_mode == "popup_view") {
+
+    $now = date('Y-m-d');
+
+    $sql = "
+                    SELECT *
+                    
+                    FROM jf_popup_management
+                    
+                    WHERE
+                        1 = 1
+                    
+                    AND status = 'Y'
+                    
+                    AND start_date <= '${now}' 
+                      
+                    AND end_date >= '${now}' 
+    ";
+
+    $result = $db->query($sql)->fetchAll();
+
+    $list = [];
+    foreach ($result as $item) {
+
+        $list[] = $item;
+    }
+
+    $result = $list;
+
+    echo json_encode($result);
+    exit;
+}
+
 function getBrowserInfo()
 {
     $userAgent = $_SERVER["HTTP_USER_AGENT"];
