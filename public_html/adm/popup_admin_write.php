@@ -25,26 +25,26 @@
             <input form="form" type="text" id="end_date" name="end_date" class="form-control form-control-sm required" autocomplete="off" required>
         </div>
         <div class="col-sm-2">
-            <label class="col-sm-12 form-label"><span class="text-danger"></span> 팝업창 가로 사이즈</label>
-            <input form="form" type="text" id="popup_width_size" name="popup_width_size" class="form-control form-control-sm required" autocomplete="off" required>
+            <label class="col-sm-12 form-label"><span class="text-danger"></span> 팝업창 가로 사이즈 (px)</label>
+            <input form="form" type="number" min="200" id="popup_width_size" name="popup_width_size" class="form-control form-control-sm" placeholder="기본값 200" autocomplete="off">
         </div>
         <div class="col-sm-2">
-            <label class="col-sm-12 form-label"><span class="text-danger"></span> 팝업창 세로 사이즈</label>
-            <input form="form" type="text" id="popup_height_size" name="popup_height_size" class="form-control form-control-sm required" autocomplete="off" required>
+            <label class="col-sm-12 form-label"><span class="text-danger"></span> 팝업창 세로 사이즈 (px)</label>
+            <input form="form" type="number" min="200" id="popup_height_size" name="popup_height_size" class="form-control form-control-sm" placeholder="기본값 200" autocomplete="off">
         </div>
         <div class="col-sm-2">
             <label class="col-sm-12 form-label"><span class="text-danger"></span> 팝업창 위치(TOP)</label>
-            <input form="form" type="text" id="popup_top_size" name="popup_top_size" class="form-control form-control-sm required" autocomplete="off" required>
+            <input form="form" type="text" id="popup_top_size" name="popup_top_size" class="form-control form-control-sm" placeholder="기본값 0" autocomplete="off">
         </div>
         <div class="col-sm-2">
             <label class="col-sm-12 form-label"><span class="text-danger"></span> 팝업창 위치(LEFT)</label>
-            <input form="form" type="text" id="popup_left_size" name="popup_left_size" class="form-control form-control-sm required" autocomplete="off" required>
+            <input form="form" type="text" id="popup_left_size" name="popup_left_size" class="form-control form-control-sm" placeholder="기본값 0" autocomplete="off">
         </div>
 
     </div>
 
     <div class="row mb-3">
-        <div class="col-sm-3">
+        <div class="col-sm-2">
             <label class="col-sm-12 form-label"><span class="text-danger"></span> 팝업 상태</label>
             <select form="form" class='form-select' name="status" id="status">
                 <option value='Y' selected>사용중</option>
@@ -110,7 +110,6 @@
         });
     }
 
-
     // 모달 저장
     $("#form").on("submit", function() {
         create();
@@ -122,6 +121,12 @@
         let process_mode = "popup_create"; // 등록 모드
 
         $("#popup_content").val($(".summernote").summernote("code")); // 에디터 처리
+
+        let popup_content = $("#popup_content").val();
+        if (!popup_content) {
+            alert('내용을 입력하세요.');
+            return false;
+        }
 
         var formData = new FormData( $("#form")[0] );
         formData.append("process_mode", process_mode);
@@ -138,7 +143,7 @@
             async: false,
         }).done(function(data) {
             if (data.status) {
-                let alertText = '생성'
+                let alertText = '수정'
                 alert('팝업창이 '+ alertText + '되었습니다.');
                 window.location.href="popup_admin.php"
             } else {
@@ -170,9 +175,15 @@
         $('#start_date').datepicker(dtpickerOpt).on('hide', function (e) {
             e.stopPropagation();
         });
+
         $('#end_date').datepicker(dtpickerOpt).on('hide', function (e) {
             e.stopPropagation();
         });
+
+        const now = dayjs();
+        const nextWeek = now.add(1, 'week');
+        $("#start_date").datepicker('setDate', now.format('YYYY-MM-DD'));
+        $("#end_date").datepicker('setDate', nextWeek.format('YYYY-MM-DD'));
 
         // summernote 적용
         var $summernote = $('.summernote').summernote({

@@ -5,45 +5,6 @@
 <?php include "head.php"; ?>
 
 <?php include "nav_top.php"; ?>
-    <style>
-        .popup-container {
-            /*display: none;*/
-            position: fixed;
-            top: 0;
-            left: 0;
-            /*width: 100%;*/
-            /*height: 100%;*/
-            /*background: rgba(0, 0, 0, 0.8);*/
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            overflow: auto;
-        }
-
-        .popup-content {
-            display: block;
-            max-width: 90%;
-            max-height: 90%;
-        }
-
-        .popup-content img {
-            display: block;
-            width: auto;
-            height: auto;
-            max-width: 100%;
-            max-height: 100%;
-            margin: 0 auto;
-        }
-
-        .close-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: #fff;
-            font-size: 24px;
-            cursor: pointer;
-        }
-    </style>
 
 <div class="wrapper wrapper-content">
     <div class="container">
@@ -59,8 +20,8 @@
     </div>
 </div>
 
-
-    <div id="popupContainer" class=""></div>
+<!-- popup container-->
+<div id="popupContainer" class="pop-container"></div>
 
 
 <script>
@@ -92,34 +53,59 @@
             async: false,
         }).done(function (result) {
             if (result.length > 0) {
+
                 result.forEach(function(val, key) {
-                    var popupContent = `
-                      <div class="popup-container p_container" style="z-index: ${9999 - key};">
-                        <div class="popup-content" style="width: ${val.popup_width_size}px; height: ${val.popup_height_size}px;">
-                          <span class="close-button">&times;</span>
-                          <div class="popup-content-${key}"></div>
+                    let popupIdx = val.idx;
+
+                    if (getCookie('popup_'+popupIdx)) {
+                        return;
+                    };
+
+                    //  popup css code is in css/style.css
+                    let popupContent = `
+                        <div class="popup-container p_container" style="z-index: ${9999 - key}; top: ${val.popup_top_size}px; left: ${val.popup_left_size}px;">
+                            <div class="popup-content" style="margin: 5px 5px 5px 5px;  width: ${val.popup_width_size}px; height: ${val.popup_height_size}px; min-width: 200px;">
+                                <div class="popup-content-${key}"></div>
+                            </div>
+
+                            <div class="popup-btn-group clearfix">
+                                <button class="btn close-button-today float-start" id="" data-idx="${popupIdx}" type="button">1일 동안 보지 않음</button>
+                                <button class="btn close-button float-end" id="" type="button">닫기</button>
+                            </div>
                         </div>
-                      </div>
                     `;
 
                     $('#popupContainer').append(popupContent);
                     $(`.popup-content-${key}`).html(val.popup_content);
+
                 });
 
                 $('#popupContainer').show();
             }
+
         })
+    }
+
+    $(document).on("click", ".close-button-today", function() {
+        let popupIdx = $(this).data("idx");
+        setCookie('popup_'+popupIdx, 1, 1);
+        popupClose(this);
+    });
+
+    $(document).on("click", ".close-button", function() {
+        popupClose(this);
+    });
+
+    function popupClose(element){
+        $(element).closest('.p_container').hide();
     }
 
     $(function() {
         visitorCount();
         popup();
 
-        // 팝업 관리
+        // 팝업 드래그
         $(".popup-container").draggable();
-        $(`.popup-content .close-button`).click(function() {
-            $(this).closest('.p_container').hide();
-        });
     });
 </script>
 

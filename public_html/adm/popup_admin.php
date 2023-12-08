@@ -72,7 +72,11 @@
                 },
                 { data: "start_date", className: "text-center" },
                 { data: "end_date", className: "text-center" },
-                { data: "status", className: "text-left" },
+                { data: "status", className: "text-center"  ,
+                    render: function(data, type, row, meta) {
+                        return data == 'Y' ? '활성' : '비활성';
+                    }
+                },
                 { data: "idx", className: "text-center",
                     render: function(data, type, row, meta) {
                         let html = `<button type='button' class='btn btn-default btn-xs btn_update' onclick="location.href='popup_admin_update.php?idx=${row.idx}'">수정</button>

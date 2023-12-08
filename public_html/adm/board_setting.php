@@ -43,24 +43,24 @@
             <div class="col-sm-3">
                 <label class="col-sm-12 form-label"><span class="text-danger"></span> 연락처 입력</label>
                 <select form="form" class='form-select' name="phone_check" id="phone_check">
-                    <option value='Y'>Y</option>
-                    <option value='N'>N</option>
+                    <option value='Y'>활성</option>
+                    <option value='N'>비활성</option>
                 </select>
             </div>
 
             <div class="col-sm-3">
                 <label class="col-sm-12 form-label"><span class="text-danger"></span> 이메일 입력</label>
                 <select form="form" class='form-select' name="email_check" id="email_check">
-                    <option value='Y'>Y</option>
-                    <option value='N'>N</option>
+                    <option value='Y'>활성</option>
+                    <option value='N'>비활성</option>
                 </select>
             </div>
 
             <div class="col-sm-3">
                 <label class="col-sm-12 form-label"><span class="text-danger"></span> 주소 입력</label>
                 <select form="form" class='form-select' name="address_check" id="address_check">
-                    <option value='Y'>Y</option>
-                    <option value='N'>N</option>
+                    <option value='Y'>활성</option>
+                    <option value='N'>비활성</option>
                 </select>
             </div>
         </div>
